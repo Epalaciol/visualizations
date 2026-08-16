@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visualizations</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --hover: #f3f4f6;
+    --accent: #2563eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117;
+      --fg: #e6edf3;
+      --muted: #8b949e;
+      --border: #30363d;
+      --hover: #161b22;
+      --accent: #58a6ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+  }
+  header {
+    padding: 2rem 1.5rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+  p.sub { color: var(--muted); margin: 0; font-size: 0.9rem; }
+  main { max-width: 900px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+  input#search {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 0.95rem;
+  }
+  #status { color: var(--muted); font-size: 0.9rem; padding: 1rem 0; }
+  ul.tree { list-style: none; margin: 0; padding: 0; }
+  ul.tree ul { list-style: none; margin: 0; padding-left: 1.25rem; }
+  li.folder > .row { font-weight: 600; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .row:hover { background: var(--hover); }
+  a.file-link {
+    color: var(--fg);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  a.file-link:hover { color: var(--accent); }
+  .icon { width: 1.1em; display: inline-block; text-align: center; }
+  .caret {
+    display: inline-block;
+    width: 1em;
+    transition: transform 0.15s ease;
+  }
+  li.collapsed > ul { display: none; }
+  li.collapsed > .row .caret { transform: rotate(-90deg); }
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 2rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Visualizations</h1>
+  <p class="sub">Índice dinámico — escanea el repositorio automáticamente, no requiere edición manual.</p>
+</header>
+<main>
+  <input id="search" type="search" placeholder="Buscar archivo o carpeta...">
+  <div id="status">Cargando árbol del repositorio…</div>
+  <ul class="tree" id="tree"></ul>
+</main>
+<footer>
+  Generado dinámicamente desde la API de GitHub · <a href="https://github.com/Epalaciol/visualizations" target="_blank" rel="noopener">Ver en GitHub</a>
+</footer>
+<script>
+(function () {
+  const OWNER = "Epalaciol";
+  const REPO = "visualizations";
+  const BRANCH = "main";
+
+  const statusEl = document.getElementById("status");
+  const treeEl = document.getElementById("tree");
+  const searchEl = document.getElementById("search");
+
+  function buildNestedTree(paths) {
+    const root = {};
+    for (const path of paths) {
+      const parts = path.split("/");
+      let node = root;
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+        const isFile = i === parts.length - 1;
+        if (isFile) {
+          node.__files = node.__files || [];
+          node.__files.push(part);
+        } else {
+          node[part] = node[part] || {};
+          node = node[part];
+        }
+      }
+    }
+    return root;
+  }
+
+  function renderNode(node, ul, pathPrefix) {
+    const folderNames = Object.keys(node)
+      .filter((k) => k !== "__files")
+      .sort((a, b) => a.localeCompare(b));
+
+    for (const name of folderNames) {
+      const li = document.createElement("li");
+      li.className = "folder";
+      const row = document.createElement("div");
+      row.className = "row";
+      row.innerHTML = `<span class="caret">▾</span><span class="icon">📁</span><span>${name}</span>`;
+      row.addEventListener("click", () => li.classList.toggle("collapsed"));
+      li.appendChild(row);
+
+      const childUl = document.createElement("ul");
+      renderNode(node[name], childUl, pathPrefix + name + "/");
+      li.appendChild(childUl);
+      ul.appendChild(li);
+    }
+
+    const files = (node.__files || [])
+      .filter((f) => f.toLowerCase().endsWith(".html"))
+      .sort((a, b) => a.localeCompare(b));
+
+    for (const file of files) {
+      const li = document.createElement("li");
+      li.className = "file";
+      const href = pathPrefix + file;
+      li.innerHTML = `<div class="row"><a class="file-link" href="${href}" target="_blank" rel="noopener"><span class="icon">📄</span><span>${file}</span></a></div>`;
+      ul.appendChild(li);
+    }
+  }
+
+  function applyFilter(query) {
+    const q = query.trim().toLowerCase();
+    const items = treeEl.querySelectorAll("li");
+    if (!q) {
+      items.forEach((li) => { li.style.display = ""; });
+      return;
+    }
+    items.forEach((li) => { li.style.display = "none"; });
+    items.forEach((li) => {
+      const text = li.querySelector(":scope > .row")?.textContent.toLowerCase() || "";
+      if (text.includes(q)) {
+        li.style.display = "";
+        li.classList.remove("collapsed");
+        let parent = li.parentElement;
+        while (parent && parent !== treeEl) {
+          if (parent.tagName === "UL") {
+            const parentLi = parent.closest("li");
+            if (parentLi) {
+              parentLi.style.display = "";
+              parentLi.classList.remove("collapsed");
+            }
+          }
+          parent = parent.parentElement;
+        }
+      }
+    });
+  }
+
+  searchEl.addEventListener("input", () => applyFilter(searchEl.value));
+
+  async function load() {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${BRANCH}?recursive=1`,
+        { headers: { Accept: "application/vnd.github+json" } }
+      );
+      if (!res.ok) throw new Error(`GitHub API respondió ${res.status}`);
+      const data = await res.json();
+
+      const htmlPaths = data.tree
+        .filter((entry) => entry.type === "blob" && entry.path.toLowerCase().endsWith(".html") && entry.path !== "index.html")
+        .map((entry) => entry.path);
+
+      if (htmlPaths.length === 0) {
+        statusEl.textContent = "No se encontraron archivos .html todavía.";
+        return;
+      }
+
+      const nested = buildNestedTree(htmlPaths);
+      renderNode(nested, treeEl, "");
+      statusEl.textContent = `${htmlPaths.length} archivo(s) HTML encontrados.`;
+    } catch (err) {
+      statusEl.textContent = "Error al cargar el árbol del repositorio: " + err.message;
+      console.error(err);
+    }
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
