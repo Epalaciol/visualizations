@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guión de estrategia — Comité de Inversión</title>
+<style>
+  :root{
+    --bg:#faf8f4; --ink:#1f2320; --muted:#6b6f6a; --line:#e2ddd2;
+    --card:#ffffff; --accent1:#2f5d50; --accent2:#8a4b2e; --accent3:#4a5a8a; --accent4:#7a6a2e;
+    --chip:#f1ede2;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:0 0 4rem 0; background:var(--bg); color:var(--ink);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    line-height:1.55; font-size:17px;
+  }
+  header{
+    padding:2.4rem 1.5rem 1.6rem; max-width:820px; margin:0 auto; border-bottom:1px solid var(--line);
+  }
+  header .kicker{
+    font-family: -apple-system, Helvetica, Arial, sans-serif; text-transform:uppercase;
+    letter-spacing:.08em; font-size:.72rem; color:var(--muted); margin-bottom:.5rem;
+  }
+  header h1{ margin:.1rem 0 .4rem; font-size:1.9rem; line-height:1.2; }
+  header p.sub{ margin:0; color:var(--muted); font-size:.98rem; }
+  .intro{
+    max-width:820px; margin:1.4rem auto 0; padding:1.1rem 1.5rem; background:var(--card);
+    border:1px solid var(--line); border-radius:10px; font-size:.98rem;
+  }
+  .intro p{ margin:0; }
+  main{ max-width:820px; margin:0 auto; padding:0 1.5rem; }
+  section.bloque{ margin-top:2.6rem; }
+  .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:2rem; height:2rem; border-radius:50%; color:#fff; font-family:-apple-system,Helvetica,Arial,sans-serif;
+    font-size:1rem; font-weight:600; margin-right:.6rem; vertical-align:middle;
+  }
+  .b1 .num{ background:var(--accent1);} .b2 .num{ background:var(--accent2);}
+  .b3 .num{ background:var(--accent3);} .b4 .num{ background:var(--accent4);}
+  section.bloque h2{ font-size:1.4rem; margin:0 0 .2rem; display:flex; align-items:center; }
+  section.bloque .subtitulo{
+    font-family:-apple-system,Helvetica,Arial,sans-serif; font-size:.85rem; color:var(--muted);
+    margin:0 0 1rem 2.6rem;
+  }
+  .guion p{ margin:0 0 .9rem; }
+  .guion{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.3rem 1.5rem; }
+  .tickers{ margin:.9rem 0 0; display:flex; flex-wrap:wrap; gap:.4rem; }
+  .chip{
+    font-family:-apple-system,Helvetica,Arial,sans-serif; font-size:.78rem; background:var(--chip);
+    border:1px solid var(--line); border-radius:999px; padding:.2rem .65rem; color:var(--ink);
+  }
+  .chip.out{ text-decoration:line-through; color:var(--muted); background:transparent; }
+  .linea{ margin-top:1.1rem; border-top:1px dashed var(--line); padding-top:1rem; }
+  .linea .item{ display:flex; gap:.8rem; margin-bottom:.7rem; align-items:baseline; }
+  .linea .fecha{
+    font-family:-apple-system,Helvetica,Arial,sans-serif; font-size:.74rem; color:#fff;
+    background:var(--muted); border-radius:5px; padding:.15rem .45rem; white-space:nowrap; flex:0 0 auto;
+  }
+  .b1 .linea .fecha{ background:var(--accent1);} .b2 .linea .fecha{ background:var(--accent2);}
+  .b3 .linea .fecha{ background:var(--accent3);} .b4 .linea .fecha{ background:var(--accent4);}
+  .linea .txt{ font-size:.95rem; }
+  .linea .txt b{ font-weight:600; }
+  .resultado{
+    margin-top:1rem; font-size:.92rem; padding:.8rem 1rem; border-radius:8px; background:var(--chip);
+    font-family:-apple-system,Helvetica,Arial,sans-serif;
+  }
+  .aclaracion{
+    margin-top:1rem; font-size:.88rem; color:var(--muted); font-family:-apple-system,Helvetica,Arial,sans-serif;
+    border-left:3px solid var(--line); padding-left:.8rem;
+  }
+  .puente{
+    margin-top:1rem; font-size:.9rem; font-style:italic; color:var(--muted);
+  }
+  .subbloque{ margin-top:1.3rem; padding-top:1.1rem; border-top:1px solid var(--line); }
+  .subbloque h3{
+    font-family:-apple-system,Helvetica,Arial,sans-serif; font-size:.95rem; margin:0 0 .5rem; color:var(--ink);
+  }
+  .imgs{ display:flex; flex-wrap:wrap; gap:1rem; margin-top:.9rem; }
+  figure{ margin:0; flex:1 1 260px; }
+  figure img{ width:100%; border-radius:8px; border:1px solid var(--line); display:block; }
+  figcaption{
+    font-family:-apple-system,Helvetica,Arial,sans-serif; font-size:.76rem; color:var(--muted);
+    margin-top:.35rem;
+  }
+  table.tickers-tbl{ width:100%; border-collapse:collapse; margin-top:.9rem; font-size:.88rem; }
+  table.tickers-tbl th, table.tickers-tbl td{
+    text-align:left; padding:.4rem .5rem; border-bottom:1px solid var(--line);
+    font-family:-apple-system,Helvetica,Arial,sans-serif;
+  }
+  table.tickers-tbl th{ color:var(--muted); font-weight:600; font-size:.76rem; text-transform:uppercase; letter-spacing:.03em; }
+  .cierre{
+    margin-top:2.6rem; background:var(--ink); color:#f3f1ea; border-radius:12px; padding:1.5rem 1.6rem;
+  }
+  .cierre h2{ margin:0 0 1rem; font-size:1.3rem; }
+  .cierre p{ margin:0 0 .8rem; font-size:.96rem; }
+  .cierre b{ color:#fff; }
+  footer{ max-width:820px; margin:2.5rem auto 0; padding:0 1.5rem; color:var(--muted);
+    font-family:-apple-system,Helvetica,Arial,sans-serif; font-size:.8rem; }
+  @media print{ body{ background:#fff; } .guion{ border:none; padding:0; } .cierre{ background:#f1ede2; color:#1f2320;} .cierre b{color:#1f2320;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Comité de Inversión · EAFIT MFAQ 2026-II · Clase 5745</div>
+  <h1>Cómo gestionamos el portafolio</h1>
+  <p class="sub">Guión resumido para el comité — 25 de agosto al 18 de septiembre de 2026. Cuatro bloques, en el orden en que los vamos a explicar.</p>
+</header>
+
+<div class="intro">
+  <p>Todo parte de tres lecturas del entorno macro: la inflación es de oferta (energía), el mercado laboral se estaba enfriando —esta se cayó después con los datos— y la Fed estaba dividida con el sesgo hacia subir tasas. Esas lecturas se convirtieron en cuatro formas distintas de invertir, en este orden: primero una asignación formal entre clases de activo con Black-Litterman; en paralelo, un motor sistemático de momentum que no depende de ninguna hipótesis y que seguimos mejorando durante todo el ejercicio; encima de las dos, apuestas tácticas puntuales cuando la convicción en la tesis de tasas altas creció; y, en las horas antes de que el catalizador central del periodo —la decisión de la Fed del 16 de septiembre— se resolviera, una ampliación deliberada hacia nuevas geografías y sectores. El profesor nos pidió responder en el comité qué hicimos, por qué, qué salió bien, qué salió mal y cómo mejorarlo — este guión sigue esa cronología y cierra respondiendo esas cinco preguntas.</p>
+</div>
+
+<main>
+
+<section class="bloque b1">
+  <h2><span class="num">1</span> Black-Litterman</h2>
+  <p class="subtitulo">Núcleo táctico multi-activo</p>
+  <div class="guion">
+    <p><b>Qué es y por qué lo usamos.</b> No elegimos Black-Litterman por gusto: competimos siete formas de armar el portafolio —1/N, Markowitz, mínima varianza, HRP, paridad de riesgo, inversa de volatilidad y Black-Litterman— sobre los mismos 15 ETFs, con datos desde 2015, y las juzgamos en los episodios históricos parecidos al de hoy: inflación de oferta con tasas al alza. Markowitz clásico se volvió loco y concentró 18% en un solo activo sin ninguna tesis detrás. Mínima varianza y HRP, que son los métodos "seguros" que casi todo el mundo usa, dieron Sharpe negativo, porque se llenan de bonos cortos, justo lo que más pierde cuando suben las tasas. El ganador puro fue el equiponderado 1/N, pero 1/N no puede expresar ninguna tesis de inversión. Por eso lo usamos como punto de partida y dejamos que Black-Litterman se desviara de ahí solo lo que nuestras cuatro vistas macro justificaran: activos reales contra el mercado, duración corta contra duración larga, amplitud contra concentración, y dólar fuerte contra dólar débil.</p>
+    <p><b>Qué compramos con esa decisión.</b> El 2 de septiembre desplegamos el bloque completo: XLE, XLF, XLV y RSP en renta variable sectorial; GLD, UUP e IBIT como satélites de oro, dólar y cripto; y SHY y STIP en la pata corta de renta fija. Cambiamos dos cosas frente a lo que decía el modelo puro: usamos BCI en vez de DBC para la exposición a materias primas, y no compramos el SPY que el modelo sugería con muy poco peso, porque el propio modelo prefiere RSP para esa misma exposición. En TLT no compramos nada —el modelo le puso 0%— pero ya lo teníamos en corto desde el 26 de agosto, la primera operación del portafolio, antes incluso de formalizar el modelo.</p>
+    <div class="tickers">
+      <span class="chip">XLE</span><span class="chip">XLF</span><span class="chip">XLV</span><span class="chip">RSP</span>
+      <span class="chip">GLD</span><span class="chip">UUP</span><span class="chip">IBIT</span><span class="chip">BCI</span>
+      <span class="chip">TLT (corto)</span>
+    </div>
+    <p style="margin-top:1rem"><b>Lo que liquidamos y ajustamos, y por qué.</b> El 8 de septiembre vendimos SHY y STIP —con una gananciita simbólica, no fue la razón— y pasamos ese capital a SGOV. La razón es de tesis: SGOV son prácticamente T-bills a 0-3 meses, sin sensibilidad a duración ni a inflación. SHY sí tiene duración (1-3 años) y STIP está atado al breakeven de inflación. Con el FOMC del 16 de septiembre encima, preferimos quedar en efectivo puro en esa pata, en vez de sostener una protección a la inflación que se debilita justo si la Fed cumple y sube tasas. Ese mismo día, además, subimos la posición de XLF de 97 a 191 acciones: reforzamos financieras justo cuando más convencidos estábamos de la tesis de tasas altas por más tiempo — la misma convicción que, unas horas después, llevó al equipo a abrir el corto en QQQ de la Sección 2.</p>
+    <div class="linea">
+      <div class="item"><span class="fecha">26-ago</span><span class="txt">Corto en TLT (61 acc.) — primera expresión de la tesis de tasas al alza, antes de formalizar el modelo.</span></div>
+      <div class="item"><span class="fecha">02-sep</span><span class="txt">Despliegue del núcleo: XLE, XLF, XLV, RSP, BCI, GLD, UUP, IBIT, SHY, STIP.</span></div>
+      <div class="item"><span class="fecha">08-sep</span><span class="txt">Vendimos SHY y STIP, compramos SGOV — fuera de duración e inflación antes del FOMC.</span></div>
+      <div class="item"><span class="fecha">08-sep</span><span class="txt">Ampliamos XLF (+94 acc., total 191) — reforzar la tesis de tasas altas vía márgenes financieros.</span></div>
+      <div class="item"><span class="fecha">16-sep</span><span class="txt">La Fed sube tasas 25 pb — la tesis central se confirma.</span></div>
+    </div>
+    <div class="resultado">Resultado (cierre 31-ago a 17-sep): el núcleo perdió −0.36% frente a −0.65% del benchmark 60/40, con menor caída máxima. Solo 1 de las 4 vistas acertó (duración corta), pero era la que más pesaba en la cartera — por eso ganamos igual.</div>
+    <p class="puente">Esa misma convicción en la tesis de tasas altas —reforzada, no cambiada, por este resultado— es la que después llevó al equipo a tomar posiciones más concentradas y discrecionales: el bloque Especulativo.</p>
+  </div>
+</section>
+
+<section class="bloque b2">
+  <h2><span class="num">2</span> Especulativa</h2>
+  <p class="subtitulo">Apuestas tácticas y discrecionales, fuera del modelo</p>
+  <div class="guion">
+    <p><b>Qué es.</b> Es todo lo que no viene del modelo sistemático de momentum ni del marco formal de Black-Litterman: apuestas puntuales por catalizador o por evento, tomadas con criterio discrecional del equipo.</p>
+    <p><b>NVDA — el motivante fue el catalizador de resultados.</b> Fue la primera operación del portafolio, el 26 de agosto, antes de tener modelo formalizado: compramos 24 acciones a $210.51 tras un retroceso, con los resultados de Nvidia como catalizador, y vendimos dos días después a $225.33: +$355.68 (+7.04%). Salida disciplinada, sin esperar más.</p>
+    <p><b>Corto en QQQ — el motivante fue la misma tesis de tasas, más concentrada.</b> El 8 de septiembre abrimos un corto de 15 acciones a $718.99 (≈10.8% del portafolio). Es la misma Hipótesis 3 del núcleo —Fed hawkish presiona los múltiplos de las tecnológicas— pero expresada de forma más directa y agresiva, justo antes de los catalizadores de esa semana: PPI, CPI y la decisión de la Fed el 16 de septiembre.</p>
+    <p><b>Call de ORCL y put de QQQ — el motivante fue doble.</b> El 10 de septiembre, la misma noche del reporte de Oracle, compramos 10 calls strike 160 (prima $10,100) porque esperábamos un buen resultado. El mismo día compramos 10 puts de QQQ strike 710 (prima $7,780) por la misma tesis de la subida de tasas de la FOMC, reforzando el corto de acciones con riesgo acotado.</p>
+    <div class="tickers">
+      <span class="chip">NVDA (cerrado, +7.04%)</span><span class="chip">QQQ corto</span>
+      <span class="chip">Call ORCL 160</span><span class="chip">Put QQQ 710</span>
+    </div>
+    <div class="linea">
+      <div class="item"><span class="fecha">26–28-ago</span><span class="txt">NVDA: compra y venta táctica, +7.04% en dos sesiones.</span></div>
+      <div class="item"><span class="fecha">08-sep</span><span class="txt">Corto en QQQ, 15 acc. — apuesta de tasas más concentrada.</span></div>
+      <div class="item"><span class="fecha">10-sep</span><span class="txt">Call ORCL (earnings) + Put QQQ (misma tesis del corto, riesgo acotado).</span></div>
+    </div>
+
+    <div class="subbloque">
+      <h3>Lo que dejamos sobre la mesa — revisando los gráficos horarios</h3>
+      <p>Las dos posiciones de opciones dejan una lección de gestión de salida, no de tesis: en las dos tuvimos la dirección correcta durante horas y no la monetizamos por no fijar un nivel de venta desde que abrimos la posición.</p>
+      <div class="imgs">
+        <figure>
+          <img src="orcl_ejercicio.png" alt="Gráfico horario de ORCL, 10 al 18 de septiembre de 2026">
+          <figcaption>ORCL, velas horarias 10–18 sep. Fuente: Investing.com / TradingView.</figcaption>
+        </figure>
+        <figure>
+          <img src="qqq_ejercicio.png" alt="Gráfico horario de QQQ, 10 al 18 de septiembre de 2026">
+          <figcaption>QQQ, velas horarias 10–18 sep. Fuente: Investing.com / TradingView.</figcaption>
+        </figure>
+      </div>
+      <p style="margin-top:.9rem"><b>ORCL:</b> la mañana siguiente a la compra (11-sep) el precio saltó a máximos cercanos a $164-165 — la call llegó a estar dentro del dinero, por encima del strike de $160— y desde ahí cayó de forma sostenida hasta cerrar en $147.61 el 18-sep, día de vencimiento: la call expiró sin valor. El error no fue la tesis —esperábamos, correctamente, un buen resultado— sino no poner una venta en niveles por encima de $160 para capturar esa subida inicial; en cambio, esperamos a que el mercado premiara aún más el resultado, y el mercado hizo lo contrario.</p>
+      <p><b>QQQ:</b> el índice tocó un mínimo cercano a $700 el 16-sep —la put llegó a tener valor intrínseco, por debajo del strike de $710— y desde ahí el mercado rebotó con fuerza hasta cerrar en $721.45 el 18-sep: la put también expiró sin valor. Aquí la tesis era la contraria: esperábamos que la subida de tasas de la Fed profundizara la caída de las tecnológicas por debajo de $700, y en cambio el mercado lo leyó como certidumbre despejada y compró. Otra vez, faltó fijar de antemano un nivel de salida cerca del mínimo en vez de esperar a que el mercado castigara más a las tecnológicas.</p>
+    </div>
+
+    <div class="aclaracion">Autocrítica para el comité: el call de ORCL, con 10.1% del capital, terminó siendo la posición individual más grande de todo el portafolio para una apuesta de un solo evento binario. En retrospectiva, un tamaño de satélite (3-5%) hubiera capturado la misma convicción con menos riesgo concentrado.</div>
+    <p class="puente">Esta ampliación discrecional se decidió por fuera de los dos motores formales del portafolio. Días después, esa misma lógica de "sumar una apuesta puntual fuera del modelo" se repitió, pero esta vez para diversificar en vez de concentrar: el bloque de Diversificación.</p>
+  </div>
+</section>
+
+<section class="bloque b3">
+  <h2><span class="num">3</span> Diversificación</h2>
+  <p class="subtitulo">Nuevas exposiciones — EWZ, SOXX, DTCR y VWOB</p>
+  <div class="guion">
+    <p><b>Qué es.</b> Es el bloque que amplía el mapa del portafolio más allá del núcleo, el momentum y las apuestas de tasas: primero hacia una geografía completa (Brasil, 9-sep) y después hacia dos sectores puntuales con tesis propia más renta fija emergente (15-16-sep). En los dos casos la lógica es la misma: sumar una fuente de retorno que no dependiera exclusivamente de que la tesis de tasas altas en EE.UU. se cumpliera al pie de la letra.</p>
+    <p><b>EWZ — mayor exposición por dos tesis que se refuerzan.</b> El 9 de septiembre compramos 200 acciones a $38.02 (7.6% del portafolio, por encima del rango típico de un satélite de 3-5%). Brasil es exportador neto de materias primas —extiende la Hipótesis 1 de energía y materias primas en la misma línea que XLE, BCI y GLD— y, a menos de un mes de las elecciones del 4 de octubre, Bolsonaro y Lula estaban técnicamente empatados en las encuestas: un catalizador de volatilidad propio. Descartamos un ETF amplio de mercados emergentes porque ese consenso depende de que la Fed recorte tasas, justo lo contrario de nuestra tesis central — concentrar en Brasil evitó esa contradicción.</p>
+    <p><b>SOXX + DTCR + VWOB — la tesis armada por WhatsApp la noche antes del FOMC.</b> Los semiconductores venían de una corrección fuerte (el índice de Filadelfia cayó 5.9% en una sola sesión), lo que abrió una oportunidad de entrada. SOXX reparte esa apuesta entre Nvidia, Micron, AMD, Broadcom, Intel, TSMC y otros, sin tener que adivinar cuál fabricante gana. DTCR complementa la tesis un nivel más abajo: no depende de quién fabrique el mejor chip, sino de que la expansión de IA va a seguir necesitando data centers, electricidad y conectividad (Digital Realty, American Tower). VWOB entra por el lado macro: bonos soberanos en dólares de mercados emergentes, con un yield cercano a 6.1% y precio ya castigado por la subida global de tasas — gran parte del golpe ya está en precio, y una eventual normalización suma una segunda fuente de retorno además del carry.</p>
+    <div class="tickers">
+      <span class="chip">EWZ — 200 acc. @ $38.02</span>
+      <span class="chip">SOXX — 22 acc. @ $506.71</span>
+      <span class="chip">DTCR — 162 acc. @ $27.35</span>
+      <span class="chip">VWOB — 103 acc. @ $64.72</span>
+    </div>
+    <div class="linea">
+      <div class="item"><span class="fecha">09-sep</span><span class="txt">Compra de EWZ — ciclo de commodities + catalizador electoral de Brasil.</span></div>
+      <div class="item"><span class="fecha">15-sep</span><span class="txt">Se define la tesis completa de SOXX+DTCR+VWOB en el chat del equipo, la noche antes del FOMC.</span></div>
+      <div class="item"><span class="fecha">16-sep AM</span><span class="txt">Compra de SOXX, DTCR y VWOB a la apertura. El mismo día cerramos CTVA (momentum, con pérdida) por regla de salida del sistema.</span></div>
+      <div class="item"><span class="fecha">16-sep PM</span><span class="txt">La Fed sube tasas — el evento que este bloque y el corto en QQQ (Sección 2) esperaban desde ángulos opuestos.</span></div>
+    </div>
+    <div class="aclaracion">Tensión reconocida por el propio equipo: este bloque compra tecnología en la caída (SOXX) mientras seguíamos cortos en QQQ (también tecnología) esperando la misma decisión de la Fed. Fue una contradicción de corto plazo, asumida conscientemente por la premura del calendario y no por descuido.</div>
+    <p class="puente">Esta ampliación se decidió por fuera de los dos motores formales del portafolio. Mientras tanto, el segundo motor —Momentum— seguía corriendo y mejorando en paralelo, en una cuenta de validación aparte del juego. Así llegamos al último bloque.</p>
+  </div>
+</section>
+
+<section class="bloque b4">
+  <h2><span class="num">4</span> Momentum</h2>
+  <p class="subtitulo">Bloque cuantitativo sistemático — USD 30,000</p>
+  <div class="guion">
+    <p><b>Qué es.</b> El único bloque del portafolio que no depende de ninguna hipótesis macro: reglas verificables de precio, volumen y fuerza relativa sectorial sobre el universo del S&amp;P 1500. Primero filtra el sector (fuerza relativa ≥60 percentil contra SPY en 25 días) y, dentro de los sectores fuertes, califica cada acción con un score técnico (ADX, EMA9/21, RSI14, cercanía a máximos de 52 semanas, Supertrend).</p>
+    <p><b>Cómo cambió gracias al backtest — la ruta completa.</b> No fue un salto de una versión débil a una fuerte: fueron varias iteraciones, todas corridas en la cuenta de validación aparte del juego, sobre 5 años de datos.</p>
+
+    <table class="tickers-tbl">
+      <tr><th>Versión</th><th>Diseño</th><th>CAGR bruto / neto</th><th>Sharpe bruto / neto</th><th>Máx. drawdown neto</th></tr>
+      <tr><td>Base (la del juego)</td><td>Score concentrado, 3-4 posiciones</td><td>1.9% / −4.2%</td><td>0.25 / −0.35</td><td>−30.5%</td></tr>
+      <tr><td>v10 «combo»</td><td>+52wh, FIP, mom12-1, amplitud, régimen — 10 posiciones</td><td>6.0% / −5.1%</td><td>0.54 / −0.26</td><td>−25.8%</td></tr>
+      <tr><td>v11_n3</td><td>Misma señal de v10, concentrada en 3 posiciones</td><td>5.8% / 2.8%</td><td>0.45 / 0.25</td><td>−20.8%</td></tr>
+      <tr><td>Ortogonal (final)</td><td>4 señales sin colinealidad, 20 posiciones, rebalanceo 42d</td><td>10.8% / 5.4%</td><td>0.58 / 0.34</td><td>−16.0%</td></tr>
+    </table>
+
+    <p style="margin-top:1rem"><b>Base</b> es la que efectivamente abrió las cuatro posiciones reales del juego (CNR, CRWD, CVX, CTVA): en bruto es prácticamente indistinguible de no operar, y en neto —321 operaciones en 5 años— los costos de transacción se comen el resultado.</p>
+    <p><b>v10</b> sumó cinco factores más (máximo de 52 semanas, Frog-in-the-Pan, momentum 12-1, amplitud de mercado, filtro de régimen) sobre 10 posiciones. El backtest bruto mejoró, pero con 793 operaciones en 5 años la fricción se comió toda la ventaja: en neto quedó peor que la propia versión base.</p>
+    <p><b>v11_n3</b> tomó la misma señal de v10 pero la concentró en solo 3 posiciones con más riesgo por operación. Menos operaciones (240) redujo la fricción y el neto mejoró, pero la concentración disparó el drawdown a −20.8%. Todavía no era la solución — el problema no era cuántas posiciones tener, sino qué tan redundantes eran las señales entre sí.</p>
+    <p><b>El diagnóstico que sí cambió las cosas:</b> medimos, sobre 251 cortes semanales de ~1,400 acciones, la correlación de cada indicador contra el retorno futuro (IC). Cinco de los seis indicadores originales —los mismos que alimentaban v10 y v11— estaban correlacionados entre sí de 0.65 a 0.95: en la práctica, una sola señal repetida, y con capacidad predictiva negativa (puntuaban más alto justo lo que rendía peor). Solo el momentum de 12 meses mostró señal real.</p>
+    <p><b>Con ese diagnóstico</b> se construyó el diseño final, ortogonal: cuatro señales sin solaparse entre ellas (momentum 12-1, un factor que penaliza subidas a saltos, reversión de 5 días, y volumen relativo), 20 posiciones equiponderadas, rebalanceo cada 42 días, y salidas simples en vez de las parciales. Es la mejor versión de las cuatro tanto en bruto como en neto, y con el menor drawdown.</p>
+
+    <div class="subbloque">
+      <h3>Cómo quedaría armado hoy, con la ortogonalidad</h3>
+      <p>El rebalanceo del 15 de septiembre —el primero de esta versión, con 100% de rotación por ser el arranque— arma una cartera de 20 nombres equiponderados:</p>
+      <div class="tickers">
+        <span class="chip">VICR</span><span class="chip">COHR</span><span class="chip">SNDK</span><span class="chip">WDC</span><span class="chip">MTZ</span>
+        <span class="chip">AMAT</span><span class="chip">MTSI</span><span class="chip">MKSI</span><span class="chip">ATEN</span><span class="chip">NVT</span>
+        <span class="chip">FIX</span><span class="chip">AGX</span><span class="chip">STLD</span><span class="chip">DGII</span><span class="chip">LITE</span>
+        <span class="chip">ESE</span><span class="chip">KN</span><span class="chip">CMI</span><span class="chip">KGS</span><span class="chip">BHE</span>
+      </div>
+      <p style="margin-top:.8rem">Es la cartera que vive en la cuenta de validación paralela, no en el juego: dentro de la ventana del ejercicio no hubo tiempo de reabrir el juego con esta versión, así que las posiciones reales siguen siendo las que abrió la versión base — CNR, CRWD, CVX (CTVA ya se cerró el 16-sep con pérdida, Sección 3).</p>
+    </div>
+
+    <div class="tickers" style="margin-top:1rem">
+      <span class="chip">CNR</span><span class="chip">CRWD</span><span class="chip">CVX</span>
+      <span class="chip out">CTVA (cerrada 16-sep, −5.6%)</span>
+    </div>
+    <div class="linea">
+      <div class="item"><span class="fecha">02-sep</span><span class="txt">Entran CNR y CRWD con el score base.</span></div>
+      <div class="item"><span class="fecha">03-sep</span><span class="txt">Entra CVX — score 87.7, sector líder, cerca de máximo de 52 semanas.</span></div>
+      <div class="item"><span class="fecha">04-sep</span><span class="txt">Entra CTVA — elegida para diversificar el bloque fuera de energía y tecnología.</span></div>
+      <div class="item"><span class="fecha">15-sep</span><span class="txt">Primer rebalanceo de la versión ortogonal en la cuenta de validación (20 nombres, rotación 100%).</span></div>
+      <div class="item"><span class="fecha">16-sep</span><span class="txt">Se cierra CTVA en el juego por regla de salida del sistema, con pérdida.</span></div>
+    </div>
+    <div class="aclaracion">Aclaración honesta para el comité: en la ventana exacta del juego (24-ago a 15-sep), las cuatro versiones perdieron dinero en términos absolutos — incluida la ortogonal (−4.8% neto, la peor de las cuatro en ese tramo puntual, contra −2.6% de la versión base). La ventaja de la versión ortogonal se ve en el backtest de 5 años, no todavía en estas tres semanas: 22 días no alcanzan para validar ni para descartar nada, y hay que decirlo así.</div>
+  </div>
+</section>
+
+<div class="cierre">
+  <h2>En síntesis, para el comité</h2>
+  <p><b>Qué hicimos:</b> armamos el portafolio sobre tres hipótesis macro, con dos motores formales —Black-Litterman y Momentum— y los reforzamos con apuestas tácticas puntuales y una ampliación geográfica y sectorial cuando la convicción creció.</p>
+  <p><b>Qué salió bien:</b> el núcleo de Black-Litterman hizo exactamente lo que se diseñó para hacer — perder menos que el benchmark cuando la tesis se cumplió solo a medias — y el motor de momentum, aunque no ganó el juego, se diagnosticó y mejoró de forma medible y documentada, iteración por iteración.</p>
+  <p><b>Qué salió mal:</b> las dos apuestas discrecionales de opciones (ORCL, QQQ) tuvieron la dirección correcta durante horas y no la monetizamos por no fijar niveles de salida; el bloque de diversificación entró en contradicción de corto plazo con el corto en QQQ; y la versión ortogonal del momentum, en la ventana concreta del juego, todavía no alcanzó a demostrar su ventaja.</p>
+  <p><b>Cómo podemos mejorarlo:</b> fijar niveles de salida (take-profit) desde que se abre cualquier posición de opciones, no solo el stop; dimensionar las apuestas discrecionales como satélites (3-5%) y no como posiciones de convicción máxima; y darle a la versión ortogonal del momentum el tiempo de un ciclo de rebalanceo completo (42 días) antes de juzgarla, en vez de una ventana de 3 semanas.</p>
+</div>
+
+</main>
+
+<footer>
+  Documento de apoyo para el Comité de Inversión — EAFIT MFAQ 2026-II, Clase 5745. Fuentes: deep dive de Black-Litterman, informe final, historial de operaciones de Investopedia, discusión del equipo y resultados del pipeline de validación (base, v10, v11_n3, sleeve_sistematico).
+</footer>
+
+</body>
+</html>
