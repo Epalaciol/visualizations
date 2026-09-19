@@ -9,11 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0E1620; --panel:#16212E; --panel2:#1B2836; --line:#24354A;
-  --text:#E4E9EF; --muted:#8C9BAC; --dim:#5D6E80;
-  --real:#E8564E; --cf:#4FB5A0; --bench:#8494A6; --warn:#E2A33C;
-  --eq:#4E7FC7; --rf:#4FB5A0; --cm:#C9903F; --fx:#8C7BC0; --cr:#D06A9C; --dv:#E8564E; --cash:#3B4C60;
-  --pad:clamp(16px,4vw,48px);
+  --ink:#141110; --panel:#1c1815; --panel2:#221d19; --card:#1e1a17;
+  --line:#332c26; --line2:#413830;
+  --text:#f6f1e9; --muted:#a89d8f; --dim:#7b7266;
+  --real:#b5652f; --cf:#1f8a6f; --bench:#a89d8f; --warn:#a67c2e;
+  --pos:#5c8a52; --neg:#a8493f; --spec:#b23f5f;
+  --eq:#b5652f; --rf:#1f8a6f; --cm:#a67c2e; --fx:#7a6fc4; --cr:#a8493f; --dv:#b23f5f; --cash:#413830;
+  --pad:clamp(16px,3.2vw,56px);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -22,18 +24,18 @@ body{margin:0;background:var(--ink);color:var(--text);
   font-weight:400;line-height:1.5;font-feature-settings:"tnum" 1,"lnum" 1;}
 .num{font-variant-numeric:tabular-nums lining-nums}
 a{color:inherit}
-header{padding:var(--pad) var(--pad) 0}
+header{padding:var(--pad) var(--pad) 0;max-width:1720px;margin:0 auto;width:100%}
 
 .cab{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;margin-bottom:10px}
 .cab .titulo{margin:0}
 .logo{height:clamp(38px,5vw,56px);width:auto;display:block;flex:0 0 auto;align-self:center}
 .titulo{font-size:clamp(28px,4.2vw,46px);font-weight:300;letter-spacing:-.02em;margin:0 0 6px;line-height:1.12}
 .titulo b{font-weight:600}
-.sub{color:var(--muted);font-size:15px;margin:0;max-width:62ch}
-main{padding:0 var(--pad) 64px;max-width:1280px}
+.sub{color:var(--muted);font-size:15px;margin:0;text-align:justify;hyphens:auto;}
+main{padding:0 var(--pad) 72px;max-width:1720px;margin:0 auto;width:100%}
 section{margin-top:56px;scroll-margin-top:20px}
 h2{font-size:19px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
-.nota{color:var(--muted);font-size:14px;margin:0 0 22px;max-width:74ch}
+.nota{color:var(--muted);font-size:14px;margin:0 0 22px;text-align:justify;hyphens:auto;}
 
 /* hero */
 .hero{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:22px 20px 14px;margin-top:34px}
@@ -75,20 +77,21 @@ svg{display:block;width:100%;height:auto;overflow:visible}
 .tk{font-weight:600}
 .nm{color:var(--muted);font-size:13px}
 .pill{font-size:11.5px;padding:2px 7px;border-radius:3px;background:var(--panel2);color:var(--muted);white-space:nowrap}
-.pos{color:var(--cf)} .neg{color:var(--real)}
+.pos{color:var(--pos)} .neg{color:var(--neg)}
 .barra{display:inline-block;height:7px;border-radius:1px;vertical-align:middle}
 
 /* panel tesis */
-.tesis{margin-top:20px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);
+.tesis{margin-top:20px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);
   border-radius:4px;padding:20px 22px}
 .tesis h3{margin:0 0 2px;font-size:17px;font-weight:600}
 .tesis .meta{color:var(--muted);font-size:13.5px;margin:0 0 18px}
-.campos{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.campo p{margin:0;font-size:14px;max-width:68ch}
+.campos{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.campo p{margin:0;font-size:14px;text-align:justify;hyphens:auto;}
 .campo .et{display:block;color:var(--warn);font-size:12.5px;margin-bottom:5px}
 .vacio{color:var(--muted);font-size:14px}
 
-footer{padding:0 var(--pad) 48px;color:var(--dim);font-size:12.5px;max-width:80ch}
+footer{padding:0 var(--pad) 56px;color:var(--dim);font-size:12.5px;
+  max-width:1720px;margin:0 auto;width:100%;text-align:justify}
 @media (max-width:640px){
   .tabla .ocultar{display:none}
   .cmp th,.cmp td{padding:9px 8px;font-size:13.5px}
@@ -104,7 +107,7 @@ footer{padding:0 var(--pad) 48px;color:var(--dim);font-size:12.5px;max-width:80c
   vertical-align:middle;margin-right:7px;position:relative}
 .limite i{position:absolute;left:0;top:0;bottom:0;background:var(--bench);border-radius:1px}
 .limite.cerca i{background:var(--warn)}
-.limite.pasa i{background:var(--real)}
+.limite.pasa i{background:var(--spec)}
 @media (max-width:760px){.dosch{grid-template-columns:1fr}}
 
 
