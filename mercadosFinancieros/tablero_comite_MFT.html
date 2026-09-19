@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MFT Investing · Comité de Inversión · MFAC 2026-II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1620; --panel:#16212E; --panel2:#1B2836; --line:#24354A;
+  --text:#E4E9EF; --muted:#8C9BAC; --dim:#5D6E80;
+  --real:#E8564E; --cf:#4FB5A0; --bench:#8494A6; --warn:#E2A33C;
+  --eq:#4E7FC7; --rf:#4FB5A0; --cm:#C9903F; --fx:#8C7BC0; --cr:#D06A9C; --dv:#E8564E; --cash:#3B4C60;
+  --pad:clamp(16px,4vw,48px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--text);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-weight:400;line-height:1.5;font-feature-settings:"tnum" 1,"lnum" 1;}
+.num{font-variant-numeric:tabular-nums lining-nums}
+a{color:inherit}
+header{padding:var(--pad) var(--pad) 0}
+
+.cab{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;margin-bottom:10px}
+.cab .titulo{margin:0}
+.logo{height:clamp(38px,5vw,56px);width:auto;display:block;flex:0 0 auto;align-self:center}
+.titulo{font-size:clamp(28px,4.2vw,46px);font-weight:300;letter-spacing:-.02em;margin:0 0 6px;line-height:1.12}
+.titulo b{font-weight:600}
+.sub{color:var(--muted);font-size:15px;margin:0;max-width:62ch}
+main{padding:0 var(--pad) 64px;max-width:1280px}
+section{margin-top:56px;scroll-margin-top:20px}
+h2{font-size:19px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+.nota{color:var(--muted);font-size:14px;margin:0 0 22px;max-width:74ch}
+
+/* hero */
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:22px 20px 14px;margin-top:34px}
+.leyenda{display:flex;flex-wrap:wrap;gap:20px;margin-bottom:16px}
+.lg{display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--muted)}
+.sw{width:22px;height:3px;border-radius:2px;display:inline-block;transform:translateY(-3px)}
+.lg b{color:var(--text);font-weight:500}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.gl{stroke:var(--line);stroke-width:1}
+.ax{fill:var(--dim);font-size:11px}
+.serie{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.callout{fill:var(--warn);font-size:12px}
+.calloutline{stroke:var(--warn);stroke-width:1;stroke-dasharray:3 3}
+.opdot{fill:none;stroke:var(--real);stroke-width:1.5}
+
+/* metricas */
+.cmp{width:100%;border-collapse:collapse;font-size:14.5px}
+.cmp th,.cmp td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:right}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--muted);font-weight:400}
+.cmp thead th{font-weight:600;font-size:13.5px;color:var(--text);border-bottom:1px solid var(--dim)}
+.cmp thead th span{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.col-real{color:var(--real)} .col-cf{color:var(--cf)} .col-bm{color:var(--bench)}
+
+/* composicion */
+.chips{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0 0}
+.chip{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}
+.chip i{width:11px;height:11px;border-radius:2px;display:block}
+
+/* posiciones */
+.tabla{width:100%;border-collapse:collapse;font-size:14px}
+.tabla th{text-align:right;font-weight:500;font-size:12.5px;color:var(--muted);
+  padding:0 12px 9px;border-bottom:1px solid var(--dim)}
+.tabla th:nth-child(-n+3){text-align:left}
+.tabla td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right}
+.tabla td:nth-child(-n+3){text-align:left}
+.tabla tbody tr{cursor:pointer}
+.tabla tbody tr:hover{background:var(--panel)}
+.tabla tbody tr[aria-selected=true]{background:var(--panel2)}
+.tk{font-weight:600}
+.nm{color:var(--muted);font-size:13px}
+.pill{font-size:11.5px;padding:2px 7px;border-radius:3px;background:var(--panel2);color:var(--muted);white-space:nowrap}
+.pos{color:var(--cf)} .neg{color:var(--real)}
+.barra{display:inline-block;height:7px;border-radius:1px;vertical-align:middle}
+
+/* panel tesis */
+.tesis{margin-top:20px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);
+  border-radius:4px;padding:20px 22px}
+.tesis h3{margin:0 0 2px;font-size:17px;font-weight:600}
+.tesis .meta{color:var(--muted);font-size:13.5px;margin:0 0 18px}
+.campos{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.campo p{margin:0;font-size:14px;max-width:68ch}
+.campo .et{display:block;color:var(--warn);font-size:12.5px;margin-bottom:5px}
+.vacio{color:var(--muted);font-size:14px}
+
+footer{padding:0 var(--pad) 48px;color:var(--dim);font-size:12.5px;max-width:80ch}
+@media (max-width:640px){
+  .tabla .ocultar{display:none}
+  .cmp th,.cmp td{padding:9px 8px;font-size:13.5px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* desempeño por clase */
+.dosch{display:grid;gap:18px;grid-template-columns:1fr 1fr;margin-top:18px}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:14px 14px 6px}
+.mini h4{margin:0 0 2px;font-size:13.5px;font-weight:600}
+.mini p{margin:0 0 6px;font-size:12.5px;color:var(--muted)}
+.limite{display:inline-block;width:34px;height:6px;border-radius:1px;background:var(--line);
+  vertical-align:middle;margin-right:7px;position:relative}
+.limite i{position:absolute;left:0;top:0;bottom:0;background:var(--bench);border-radius:1px}
+.limite.cerca i{background:var(--warn)}
+.limite.pasa i{background:var(--real)}
+@media (max-width:760px){.dosch{grid-template-columns:1fr}}
+
+
+:focus-visible{outline:2px solid var(--warn);outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <div class="cab">
+    <h1 class="titulo"><b>MFT Investing</b><br>Comité de Inversión</h1>
+    <img class="logo" src="data:image/png;base64,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" alt="Universidad EAFIT">
+  </div>
+  <p class="sub">Maestría en Finanzas Analíticas y Cuantitativas · Mercados Financieros 2026-II.
+  Capital inicial de 100.000 USD, ventana del 26 de agosto al 17 de septiembre de 2026.
+  Benchmark: SPDR S&amp;P 500 ETF (SPY).</p>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="leyenda">
+      <span class="lg"><i class="sw" style="background:var(--real)"></i><b>Portafolio real</b> <span id="lgReal"></span></span>
+      <span class="lg"><i class="sw" style="background:var(--cf)"></i><b>Sin las opciones</b> <span id="lgCf"></span></span>
+      <span class="lg"><i class="sw" style="background:var(--bench)"></i><b>SPY</b> <span id="lgSpy"></span></span>
+    </div>
+    <div id="chartLinea"></div>
+  </div>
+  <p class="nota" style="margin-top:14px">Las tres series parten de base 100 el 26 de agosto. La línea verde es
+  el mismo libro de posiciones sin la compra de opciones del 10 de septiembre, con la prima devuelta a caja.
+  La distancia entre la línea roja y la verde es el costo de una sola decisión. Los círculos sobre la
+  línea roja marcan los días con operaciones.</p>
+
+  <section id="metricas">
+    <h2>Rendimiento y riesgo frente al benchmark</h2>
+    <p class="nota">Métricas sobre 15 retornos diarios. La muestra es corta, así que beta, alfa y Sharpe
+    anualizados deben leerse como indicativos y no como estimaciones estables.</p>
+    <table class="cmp num">
+      <thead><tr>
+        <th>Métrica</th>
+        <th class="col-real">Portafolio real</th>
+        <th class="col-cf">Sin opciones<span>contrafactual</span></th>
+        <th class="col-bm">SPY</th>
+      </tr></thead>
+      <tbody id="tbMetricas"></tbody>
+    </table>
+  </section>
+
+  <section id="porclase">
+    <h2>Desempeño y peso por clase de activo</h2>
+    <p class="nota">Aporte acumulado de cada clase al resultado, calculado día a día sobre la posición del
+    cierre anterior. El peso activo compara el peso promedio de cada clase contra el benchmark, que al ser
+    el SPY equivale a 100% en renta variable y cero en todo lo demás.</p>
+    <div class="dosch">
+      <div class="mini"><h4>Aporte acumulado en dólares</h4>
+        <p>Escala completa, con derivados incluidos</p><div id="chartClaseFull"></div></div>
+      <div class="mini"><h4>Aporte acumulado sin derivados</h4>
+        <p>Mismo cálculo, ampliando la escala del resto del libro</p><div id="chartClaseZoom"></div></div>
+    </div>
+    <table class="cmp num" style="margin-top:24px">
+      <thead><tr><th>Clase de activo</th><th>Peso promedio</th><th>Peso final</th>
+        <th>Peso activo<span>vs SPY</span></th><th>Rend. de la clase</th><th>P&amp;L</th>
+        <th>Contribución<span>puntos del portafolio</span></th></tr></thead>
+      <tbody id="tbClases"></tbody>
+    </table>
+    <p class="nota" style="margin-top:14px" id="notaClases"></p>
+  </section>
+
+  <section id="composicion">
+    <h2>Composición por clase de activo</h2>
+    <p class="nota">Exposición diaria en dólares, reconstruida operación por operación. El corto de TLT y el
+    de QQQ se muestran como exposición bruta dentro de su clase; en el valor de la cuenta restan.</p>
+    <div id="chartArea"></div>
+    <div class="chips" id="chipsClases"></div>
+  </section>
+
+  <section id="posiciones">
+    <h2>Posiciones y tesis de inversión</h2>
+    <p class="nota">Cada posición incluye la tesis que la sustentó, el riesgo asumido, el resultado obtenido y la
+    lección aprendida.</p>
+    <table class="tabla">
+      <thead><tr>
+        <th>Activo</th><th class="ocultar">Clase</th><th class="ocultar">Entrada</th>
+        <th>Exposición</th><th>Peso</th><th class="ocultar">Costo</th><th>P&amp;L</th><th>Rend.</th>
+      </tr></thead>
+      <tbody id="tbPos"></tbody>
+    </table>
+    <div class="tesis" id="panelTesis">
+      <p class="vacio">Ninguna posición seleccionada.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Fuentes: histórico de operaciones y desempeño de Investopedia Simulator; precios de cierre y calendario
+  macroeconómico de Investing.com. El histórico de desempeño de Investopedia reporta cada fila con la
+  valoración del cierre del día hábil anterior; las series de este tablero están alineadas a la fecha de
+  valoración real.
+</footer>
+
+<script>
+const D = {"fechas": ["2026-08-26", "2026-08-27", "2026-08-28", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17"], "pf": [99950.48, 100400.53, 100342.19, 100364.15, 100403.8, 100374.88, 100673.81, 100381.46, 99925.68, 99935.63, 98837.21, 88020.74, 88611.3, 90205.26, 88620.33, 82733.65], "spy": [766.08, 771.1, 769.35, 767.05, 761.78, 765.16, 773.17, 770.19, 765.96, 762.4, 757.83, 764.29, 760.88, 757.39, 754.05, 762.6], "cf": [99950.48, 100400.53, 100342.19, 100364.15, 100403.8, 100374.88, 100673.81, 100381.46, 99925.68, 99935.63, 99897.21, 99720.74, 99981.3, 100215.26, 99320.33, 99813.65], "clases": {"Caja": [99999.94, 99999.94, 105397.87, 105397.87, 105397.87, 48440.56, 43309.81, 37803.07, 48046.61, 40432.62, 22462.64, 22462.64, 22462.64, 22462.64, 5364.35, 5364.35], "Renta Fija": [-5081.3, -5070.93, -5055.68, -5033.72, -4994.07, 9963.73, 9970.25, 9960.61, 5033.8, 5063.47, 5122.42, 5118.93, 5116.27, 5129.69, 11783.36, 11770.66], "Equity": [5031.84, 5471.52, 0.0, 0.0, 0.0, 26388.16, 31463.32, 36868.66, 31209.38, 38747.28, 38779.66, 38639.92, 38835.48, 39171.79, 48779.61, 49218.3], "Commodities": [0.0, 0.0, 0.0, 0.0, 0.0, 8440.24, 8491.76, 8440.16, 8433.76, 8502.8, 8532.88, 8486.16, 8430.72, 8507.2, 8445.92, 8482.88], "Divisas": [0.0, 0.0, 0.0, 0.0, 0.0, 1887.39, 1876.67, 1881.36, 1875.33, 1874.66, 1878.01, 1880.69, 1887.39, 1890.74, 1902.8, 1901.46], "Cripto": [0.0, 0.0, 0.0, 0.0, 0.0, 5254.8, 5562.0, 5427.6, 5326.8, 5314.8, 5241.6, 5252.4, 5368.8, 5173.2, 5164.8, 5196.0], "Derivados": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16820.0, 6180.0, 6510.0, 7870.0, 7180.0, 800.0]}, "ordenClases": ["Caja", "Renta Fija", "Equity", "Commodities", "Divisas", "Cripto", "Derivados"], "posiciones": [{"ticker": "ORCL2618I160", "nombre": "Oracle Sep-18-26 Call 160", "clase": "Derivados", "q": 10, "costo": 10100.0, "mv": 0.0, "pnl": -10100.0, "ret": -100.0, "estado": "Vence 18-sep", "entrada": "2026-09-10", "ops": 1, "exposicion": 0.0, "corto": false, "tesis": "Compra de call de Oracle con strike 160 tras el reporte del 10-sep, apostando a continuación alcista post-resultados.", "riesgo": "Riesgo de decaimiento temporal extremo: la opción vencía en 8 días y el strike estaba 9% por encima del precio spot.", "resultado": "Oracle reportó EPS 1,92 vs 1,73 (+11,0%) pero la acción cayó -2,6% a 146,68. La opción expira sin valor: -10.100 USD.", "leccion": "La sorpresa de utilidades fue positiva y la posición perdió todo. Comprar una call fuera del dinero a 8 días del vencimiento es apostar a la magnitud y a la velocidad del movimiento, no solo a su dirección.", "peso": 0.0}, {"ticker": "QQQ2618U710", "nombre": "QQQ Sep-18-26 Put 710", "clase": "Derivados", "q": 10, "costo": 7780.0, "mv": 800.0, "pnl": -6980.0, "ret": -89.72, "estado": "Vence 18-sep", "entrada": "2026-09-10", "ops": 1, "exposicion": 800.0, "corto": false, "tesis": "Compra de put de QQQ con strike 710 como cobertura del portafolio ante el FOMC del 16-sep.", "riesgo": "Riesgo de que el mercado ya tuviera el alza descontada, en cuyo caso la cobertura expira sin valor.", "resultado": "QQQ tocó 704 el 15-sep pero cerró el 17-sep en 716,92. La put termina fuera del dinero: -6.980 USD.", "leccion": "La cobertura llegó a estar en el dinero y no se tomó ganancia. Una cobertura sin regla de salida deja de ser cobertura.", "peso": 0.97}, {"ticker": "CNR", "nombre": "Core Natural Resources", "clase": "Equity", "q": 49, "costo": 4921.07, "mv": 4572.68, "pnl": -348.39, "ret": -7.08, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 4572.68, "corto": false, "tesis": "Recursos naturales como exposición real a materias primas vía renta variable.", "riesgo": "Riesgo de alta volatilidad idiosincrática y sensibilidad al ciclo industrial.", "resultado": "-7,1%, la peor posición del libro fuera de las opciones. El Chicago PMI de agosto salió en 47,1 contra 57,9 esperado.", "leccion": "El dato de actividad industrial contradecía la tesis desde el 28-ago y la posición no se revisó.", "peso": 5.53}, {"ticker": "XLF", "nombre": "Financial Select Sector", "clase": "Equity", "q": 191, "costo": 10996.51, "mv": 10673.08, "pnl": -323.43, "ret": -2.94, "estado": "Abierta", "entrada": "2026-09-02", "ops": 2, "exposicion": 10673.08, "corto": false, "tesis": "Bancos como beneficiarios de tasas altas y margen de intermediación amplio, con la Fed sosteniendo la política restrictiva.", "riesgo": "Riesgo de deterioro de calidad crediticia si el alza de tasas se traslada a la morosidad.", "resultado": "La Fed subió el 16-sep pero el sector cayó -2,9%. La posición se amplió el 8-sep, justo antes de la caída.", "leccion": "Tener razón en la variable macro no garantiza tener razón en el activo: la Fed subió y el sector cayó 2,9%. El mercado ya tenía el alza descontada.", "peso": 12.9}, {"ticker": "CTVA", "nombre": "Corteva", "clase": "Equity", "q": 0, "costo": 310.59, "mv": 0.0, "pnl": -310.59, "ret": -5.65, "estado": "Cerrada", "entrada": "2026-09-04", "ops": 2, "exposicion": 0.0, "corto": false, "tesis": "Agroquímicos como sector defensivo con demanda inelástica.", "riesgo": "Riesgo de precios de insumos agrícolas y de ciclo de siembra.", "resultado": "-5,7% realizado. Cerrada el 16-sep para financiar la rotación hacia DTCR, VWOB y SOXX.", "leccion": "Primera pérdida realizada del libro. La salida fue por necesidad de caja, no por invalidación de la tesis.", "peso": 0.0}, {"ticker": "XLV", "nombre": "Health Care Select Sector", "clase": "Equity", "q": 20, "costo": 3480.2, "mv": 3376.2, "pnl": -104.0, "ret": -2.99, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 3376.2, "corto": false, "tesis": "Sector defensivo de baja beta, para amortiguar el portafolio en un escenario de desaceleración.", "riesgo": "Riesgo regulatorio y de presión en precios de medicamentos.", "resultado": "-3,0%, la defensa no defendió.", "leccion": "El sector defensivo cayó más que el mercado. La baja beta histórica del sector no se sostuvo en este periodo.", "peso": 4.08}, {"ticker": "RSP", "nombre": "S&P 500 Equal Weight", "clase": "Equity", "q": 20, "costo": 4356.4, "mv": 4266.2, "pnl": -90.2, "ret": -2.07, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 4266.2, "corto": false, "tesis": "S&P 500 equiponderado para tomar beta de mercado sin la concentración en megacaps tecnológicas.", "riesgo": "Riesgo de quedar rezagado si el liderazgo del mercado sigue concentrado, que es exactamente lo que pasó.", "resultado": "-2,1% mientras el SPY cayó -0,5%. El liderazgo siguió en las grandes tecnológicas.", "leccion": "La decisión de equiponderar fue una apuesta activa contra la concentración, y costó 1,6 puntos frente al benchmark.", "peso": 5.16}, {"ticker": "EWZ", "nombre": "iShares MSCI Brazil", "clase": "Equity", "q": 200, "costo": 7604.0, "mv": 7548.0, "pnl": -56.0, "ret": -0.74, "estado": "Abierta", "entrada": "2026-09-09", "ops": 1, "exposicion": 7548.0, "corto": false, "tesis": "Brasil como mercado emergente con valoración descontada y tasa real alta.", "riesgo": "Riesgo político, cambiario y de salida de flujos si el dólar se fortalece.", "resultado": "-0,7%. El dólar se mantuvo firme durante el periodo, medido por UUP.", "leccion": "El riesgo cambiario de esta posición está parcialmente cubierto por UUP. Funcionan como un par, no como dos apuestas independientes.", "peso": 9.12}, {"ticker": "CVX", "nombre": "Chevron", "clase": "Equity", "q": 24, "costo": 5101.68, "mv": 5077.68, "pnl": -24.0, "ret": -0.47, "estado": "Abierta", "entrada": "2026-09-03", "ops": 1, "exposicion": 5077.68, "corto": false, "tesis": "Complemento de XLE con una integrada de dividendo alto, para bajar la beta de la exposición a energía.", "riesgo": "Riesgo idiosincrático del emisor y solapamiento con XLE, que ya contiene a Chevron.", "resultado": "-0,5% en el periodo.", "leccion": "Duplica exposición con XLE, que ya contiene a Chevron. El solapamiento reduce la diversificación efectiva de la apuesta en energía.", "peso": 6.14}, {"ticker": "GLD", "nombre": "SPDR Gold Shares", "clase": "Commodities", "q": 8, "costo": 3203.68, "mv": 3186.88, "pnl": -16.8, "ret": -0.52, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 3186.88, "corto": false, "tesis": "Oro como refugio ante inflación persistente y riesgo de error de política monetaria.", "riesgo": "Riesgo de costo de oportunidad: el oro no paga flujo y compite con la tasa real.", "resultado": "-0,5%. El alza de tasas reales encareció mantenerlo.", "leccion": "Comportamiento consistente con la teoría: tasas reales al alza pesan sobre el oro.", "peso": 3.85}, {"ticker": "IBIT", "nombre": "iShares Bitcoin Trust", "clase": "Cripto", "q": 120, "costo": 5205.6, "mv": 5196.0, "pnl": -9.6, "ret": -0.18, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 5196.0, "corto": false, "tesis": "", "riesgo": "", "resultado": "", "leccion": "", "peso": 6.28}, {"ticker": "XLE", "nombre": "Energy Select Sector", "clase": "Equity", "q": 75, "costo": 4836.75, "mv": 4836.0, "pnl": -0.75, "ret": -0.02, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 4836.0, "corto": false, "tesis": "Energía como cobertura de inflación de bienes, con el deflactor del PIB en 6,4%.", "riesgo": "Riesgo de exceso de inventarios y de debilidad de demanda global.", "resultado": "Prácticamente plana en el periodo. Los inventarios de crudo salieron menos negativos de lo esperado el 16-sep.", "leccion": "Cobertura que no costó nada ni aportó nada. En una ventana de tres semanas es un resultado razonable.", "peso": 5.85}, {"ticker": "SHY", "nombre": "iShares 1-3 Year Treasury", "clase": "Renta Fija", "q": 0, "costo": -6.44, "mv": 0.0, "pnl": 6.44, "ret": 0.09, "estado": "Cerrada", "entrada": "2026-09-02", "ops": 2, "exposicion": 0.0, "corto": false, "tesis": "Tramo corto de tesoros como ancla defensiva en la construcción inicial del 2-sep.", "riesgo": "Riesgo de tasa moderado si la curva se desplazaba hacia arriba.", "resultado": "Vendida el 8-sep para acortar duración a cero vía SGOV.", "leccion": "La rotación fue coherente con la tesis del corto de TLT: si esperas alzas, no tiene sentido cargar duración.", "peso": 0.0}, {"ticker": "SGOV", "nombre": "iShares 0-3 Month Treasury", "clase": "Renta Fija", "q": 100, "costo": 10048.0, "mv": 10056.0, "pnl": 8.0, "ret": 0.08, "estado": "Abierta", "entrada": "2026-09-08", "ops": 1, "exposicion": 10056.0, "corto": false, "tesis": "Liquidez remunerada con duración prácticamente nula, para no pagar riesgo de tasa mientras la Fed seguía restrictiva.", "riesgo": "Riesgo de costo de oportunidad: rendir la tasa corta mientras otros activos se apreciaban.", "resultado": "Sustituyó a SHY y STIP el 8-sep. Rendimiento plano, como se esperaba de un activo de caja.", "leccion": "Cumplió su función. El error no fue tenerlo sino no haber usado esa liquidez con una regla.", "peso": 12.15}, {"ticker": "STIP", "nombre": "iShares 0-5 Year TIPS", "clase": "Renta Fija", "q": 0, "costo": -8.14, "mv": 0.0, "pnl": 8.14, "ret": 0.11, "estado": "Cerrada", "entrada": "2026-09-02", "ops": 2, "exposicion": 0.0, "corto": false, "tesis": "TIPS de 0-5 años: protección contra inflación pegajosa sin asumir duración larga.", "riesgo": "Riesgo de que la inflación implícita ya estuviera descontada en el precio.", "resultado": "Vendida el 8-sep. El IPC de agosto salió en 3,4% anual, en línea con lo esperado.", "leccion": "Con el dato en línea, el activo no tenía catalizador. La salida estuvo bien argumentada.", "peso": 0.0}, {"ticker": "UUP", "nombre": "Invesco DB US Dollar", "clase": "Divisas", "q": 67, "costo": 1886.72, "mv": 1901.46, "pnl": 14.74, "ret": 0.78, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 1901.46, "corto": false, "tesis": "Dólar fuerte por diferencial de tasas frente al resto del mundo desarrollado.", "riesgo": "Riesgo de reversión si la Fed girara hacia recortes.", "resultado": "+0,8%, reforzado por el alza del 16-sep.", "leccion": "Posición pequeña (1,9% del portafolio) que funcionó como cobertura natural de EWZ y VWOB.", "peso": 2.3}, {"ticker": "QQQ", "nombre": "Invesco QQQ (corto)", "clase": "Equity", "q": -15, "costo": -10784.85, "mv": -10753.8, "pnl": 31.05, "ret": 0.29, "estado": "Abierta", "entrada": "2026-09-08", "ops": 1, "exposicion": 10753.8, "corto": true, "tesis": "Venta en corto del Nasdaq como cobertura de beta tecnológica ante múltiplos exigentes y una Fed que seguiría subiendo.", "riesgo": "Riesgo ilimitado al alza y llamado al margen. El corto se abrió en 718,99 el 8-sep.", "resultado": "+0,3%. El Nasdaq no cedió: cerró el 17-sep en 716,92 tras tocar 704 el 15-sep.", "leccion": "La cobertura no funcionó porque el mercado separó el alza de tasas del desempeño tecnológico.", "peso": 13.0}, {"ticker": "VWOB", "nombre": "Vanguard EM Government Bond", "clase": "Renta Fija", "q": 103, "costo": 6666.16, "mv": 6703.24, "pnl": 37.08, "ret": 0.56, "estado": "Abierta", "entrada": "2026-09-16", "ops": 1, "exposicion": 6703.24, "corto": false, "tesis": "Deuda soberana emergente en dólares: captura de carry con spread sobre tesoros, sin riesgo cambiario directo.", "riesgo": "Riesgo de crédito soberano y de ampliación de spreads en un episodio de aversión al riesgo.", "resultado": "Entrada el 16-sep, apenas un día antes del cierre de la ventana.", "leccion": "Entró demasiado tarde para evaluarse. Una tesis de carry necesita tiempo para materializarse.", "peso": 8.1}, {"ticker": "TLT", "nombre": "iShares 20+ Year Treasury (corto)", "clase": "Renta Fija", "q": -61, "costo": -5072.15, "mv": -4988.58, "pnl": 83.57, "ret": 1.65, "estado": "Abierta", "entrada": "2026-08-26", "ops": 1, "exposicion": 4988.58, "corto": true, "tesis": "Venta en corto de duración larga: con el deflactor del PIB en 6,4% y el GDPNow de Atlanta en 4,6%, la tasa larga tenía más recorrido al alza que a la baja.", "riesgo": "Riesgo de recompra forzada por llamado al margen y costo financiero de la TTV. Si el mercado hubiera anticipado recortes, la posición pierde en ambos frentes.", "resultado": "El FOMC subió a 4,00% desde 3,75% el 16-sep. TLT pasó de 83,15 a 81,78.", "leccion": "La tesis macro se confirmó, pero el tamaño de la posición (5% del portafolio) limitó su aporte a +84 USD.", "peso": 6.03}, {"ticker": "DTCR", "nombre": "Global X Data Center REITs", "clase": "Equity", "q": 162, "costo": 4430.7, "mv": 4516.56, "pnl": 85.86, "ret": 1.94, "estado": "Abierta", "entrada": "2026-09-16", "ops": 1, "exposicion": 4516.56, "corto": false, "tesis": "REITs de centros de datos: exposición a la infraestructura física de la IA con flujo de arriendo contractual.", "riesgo": "Riesgo de tasas: los REIT son sensibles a la tasa larga, lo que va en contra de la tesis del corto de TLT.", "resultado": "+1,9% en dos días.", "leccion": "Los REIT son sensibles a la tasa larga, justo la variable contra la que apuesta el corto de TLT. Las dos posiciones se neutralizan parcialmente.", "peso": 5.46}, {"ticker": "BCI", "nombre": "abrdn Bloomberg All Commodity", "clase": "Commodities", "q": 200, "costo": 5198.0, "mv": 5296.0, "pnl": 98.0, "ret": 1.89, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 5296.0, "corto": false, "tesis": "Canasta amplia de commodities como cobertura de inflación diversificada.", "riesgo": "Riesgo de contango y de costo de rolar los futuros subyacentes.", "resultado": "+1,9%.", "leccion": "Cumplió el papel de cobertura de inflación con el IPC en 3,4% anual.", "peso": 6.4}, {"ticker": "SOXX", "nombre": "iShares Semiconductors", "clase": "Equity", "q": 22, "costo": 11147.62, "mv": 11420.2, "pnl": 272.58, "ret": 2.45, "estado": "Abierta", "entrada": "2026-09-16", "ops": 1, "exposicion": 11420.2, "corto": false, "tesis": "Semiconductores como vehículo de la tesis de inversión en capacidad de cómputo e IA.", "riesgo": "Riesgo de concentración sectorial y de ser la posición individual más grande del portafolio.", "resultado": "+2,5% en dos días. Representa el 14% del portafolio, cerca del límite del 20%.", "leccion": "Entrada tardía en una tendencia ya consolidada. Con 13,8% del portafolio es la posición individual más grande y la más expuesta al límite del 20%.", "peso": 13.8}, {"ticker": "NVDA", "nombre": "NVIDIA", "clase": "Equity", "q": 0, "costo": -355.68, "mv": 0.0, "pnl": 355.68, "ret": 7.04, "estado": "Cerrada", "entrada": "2026-08-26", "ops": 2, "exposicion": 0.0, "corto": false, "tesis": "Especulación en noticias alrededor del anuncio de resultados del 26-ago. Entrada el mismo día del reporte, salida a los dos días.", "riesgo": "Riesgo de evento: la reacción del precio no siempre sigue a la sorpresa de utilidades, y la posición no tenía cobertura.", "resultado": "EPS 2,22 vs 2,08 esperado (+6,7%) e ingresos 96,2B vs 91,9B. Salida el 28-ago a 225,33 desde 210,51.", "leccion": "Única operación del periodo con regla de salida definida de antemano. Fue la que mejor se ejecutó.", "peso": 0.0}, {"ticker": "CRWD", "nombre": "CrowdStrike", "clase": "Equity", "q": 15, "costo": 3213.3, "mv": 3685.5, "pnl": 472.2, "ret": 14.7, "estado": "Abierta", "entrada": "2026-09-02", "ops": 1, "exposicion": 3685.5, "corto": false, "tesis": "Ciberseguridad como crecimiento secular con demanda poco sensible al ciclo.", "riesgo": "Riesgo de múltiplo exigente: una compañía de alto crecimiento es vulnerable a un alza de tasas de descuento.", "resultado": "+14,7%, la mejor posición larga del portafolio.", "leccion": "Funcionó a pesar del alza de tasas, lo que sugiere que el motor fue idiosincrático y no macro.", "peso": 4.45}], "eventos": [{"fecha": "2026-08-26", "tipo": "macro", "titulo": "Deflactor del PIB y GDPNow sorprenden al alza", "texto": "El deflactor del PIB del segundo trimestre casi dobla el dato previo y la Fed de Atlanta sube su estimación de crecimiento. Crecimiento fuerte con inflación que no cede: el escenario que sostiene tasas largas más altas.", "datos": [{"ev": "GDP Price Index (QoQ) Q2", "actual": "6,4%", "esperado": "6,3%", "previo": "3,6%"}, {"ev": "Atlanta Fed GDPNow Q3", "actual": "4,6%", "esperado": "4,0%", "previo": "4,0%"}, {"ev": "Core PCE (YoY) Jul", "actual": "3,3%", "esperado": "3,3%", "previo": "3,3%"}, {"ev": "GDP (QoQ) Q2", "actual": "1,5%", "esperado": "1,5%", "previo": "2,1%"}]}, {"fecha": "2026-08-26", "tipo": "earnings", "titulo": "NVIDIA reporta después del cierre", "texto": "Sorpresa positiva en utilidades e ingresos. La acción cerró prácticamente plana antes del reporte.", "datos": [{"ev": "EPS", "actual": "2,22", "esperado": "2,08", "previo": "sorpresa +6,7%"}, {"ev": "Ingresos", "actual": "96,2B", "esperado": "91,9B", "previo": "sorpresa +4,7%"}]}, {"fecha": "2026-08-28", "tipo": "macro", "titulo": "El Chicago PMI se desploma", "texto": "Diez puntos por debajo de lo esperado y en zona de contracción, contra un consenso que veía expansión. Primera señal de que la actividad industrial no acompaña al resto de los datos.", "datos": [{"ev": "Chicago PMI Ago", "actual": "47,1", "esperado": "57,9", "previo": "57,6"}, {"ev": "Michigan Consumer Sentiment Ago", "actual": "51,7", "esperado": "51,0", "previo": "55,2"}, {"ev": "Michigan Inflación 1 año Ago", "actual": "4,0%", "esperado": "4,3%", "previo": "4,2%"}]}, {"fecha": "2026-09-03", "tipo": "macro", "titulo": "Servicios fuertes y precios pagados al alza", "texto": "El ISM de servicios supera el consenso y su componente de precios se acelera. El SPY sube 1,05%, su mejor día de la ventana.", "datos": [{"ev": "ISM No Manufacturero Ago", "actual": "55,4", "esperado": "54,1", "previo": "54,1"}, {"ev": "ISM No Manuf. Precios Ago", "actual": "72,6", "esperado": "70,0", "previo": "70,3"}, {"ev": "S&P Global Composite PMI Ago", "actual": "56,0", "esperado": "56,0", "previo": "54,5"}]}, {"fecha": "2026-09-04", "tipo": "macro", "titulo": "Las nóminas triplican el consenso", "texto": "162 mil empleos contra 55 mil esperados, con la tasa de desempleo estable. Un mercado laboral así le quita a la Fed cualquier urgencia por recortar.", "datos": [{"ev": "Nonfarm Payrolls Ago", "actual": "162K", "esperado": "55K", "previo": "21K"}, {"ev": "Tasa de desempleo Ago", "actual": "4,1%", "esperado": "4,1%", "previo": "4,1%"}, {"ev": "Salario por hora (YoY) Ago", "actual": "3,1%", "esperado": "3,0%", "previo": "3,2%"}]}, {"fecha": "2026-09-08", "tipo": "macro", "titulo": "Las subastas del Tesoro se encarecen", "texto": "La nota a 3 años se coloca 18 puntos básicos por encima de la subasta anterior y el crédito al consumo sorprende. Día en que el portafolio acorta duración hacia SGOV y abre el corto de QQQ.", "datos": [{"ev": "Subasta nota 3 años", "actual": "4,474%", "esperado": "—", "previo": "4,291%"}, {"ev": "Crédito al consumo Jul", "actual": "18,06B", "esperado": "11,90B", "previo": "14,56B"}, {"ev": "NY Fed expectativas inflación 1 año", "actual": "3,6%", "esperado": "—", "previo": "3,6%"}]}, {"fecha": "2026-09-10", "tipo": "macro", "titulo": "PPI en línea y subasta a 30 años sobre 5,3%", "texto": "El PPI cumple el consenso pero el tramo largo sigue encareciéndose. Mismo día de la compra de las dos opciones.", "datos": [{"ev": "PPI (MoM) Ago", "actual": "0,4%", "esperado": "0,4%", "previo": "0,1%"}, {"ev": "Core PPI (MoM) Ago", "actual": "0,2%", "esperado": "0,3%", "previo": "0,3%"}, {"ev": "Subasta bono 30 años", "actual": "5,308%", "esperado": "—", "previo": "5,216%"}, {"ev": "Atlanta Fed GDPNow Q3", "actual": "4,4%", "esperado": "4,7%", "previo": "4,7%"}]}, {"fecha": "2026-09-10", "tipo": "earnings", "titulo": "Oracle reporta después del cierre", "texto": "Sorpresa de utilidades de casi 11% y 21 revisiones al alza del EPS. Aun así la acción cerró cayendo 2,59% en 146,68, muy por debajo del strike 160 de la call comprada ese mismo día.", "datos": [{"ev": "EPS", "actual": "1,92", "esperado": "1,73", "previo": "sorpresa +11,0%"}, {"ev": "Ingresos", "actual": "19,3B", "esperado": "19,13B", "previo": "sorpresa +0,9%"}, {"ev": "Cierre ORCL", "actual": "146,68", "esperado": "—", "previo": "−2,59%"}]}, {"fecha": "2026-09-11", "tipo": "macro", "titulo": "IPC en línea, pero el consumidor se rompe", "texto": "La inflación anual se queda en 3,4% como se esperaba, aunque el núcleo mensual sale por encima. Lo llamativo es Michigan: las expectativas de inflación a un año saltan a 4,6% y el sentimiento se hunde.", "datos": [{"ev": "CPI (YoY) Ago", "actual": "3,4%", "esperado": "3,4%", "previo": "3,4%"}, {"ev": "Core CPI (MoM) Ago", "actual": "0,3%", "esperado": "0,2%", "previo": "0,2%"}, {"ev": "Michigan Inflación 1 año Sep", "actual": "4,6%", "esperado": "4,2%", "previo": "4,0%"}, {"ev": "Michigan Consumer Sentiment Sep", "actual": "47,8", "esperado": "51,0", "previo": "51,7"}]}, {"fecha": "2026-09-15", "tipo": "macro", "titulo": "Empire State decepciona", "texto": "La manufactura de Nueva York cae a menos de la mitad del consenso, en la misma dirección que el Chicago PMI de agosto.", "datos": [{"ev": "NY Empire State Sep", "actual": "7,60", "esperado": "14,80", "previo": "20,60"}, {"ev": "Subasta bono 20 años", "actual": "5,420%", "esperado": "—", "previo": "5,204%"}]}, {"fecha": "2026-09-16", "tipo": "macro", "titulo": "La Fed sube a 4,00% y mueve los puntos", "texto": "Ventas minoristas muy por encima del consenso, GDPNow en 5,1% y una Fed que sube 25 puntos básicos y eleva toda la senda proyectada de tasas. Es el día que valida la tesis del corto de TLT.", "datos": [{"ev": "Fed Interest Rate Decision", "actual": "4,00%", "esperado": "4,00%", "previo": "3,75%"}, {"ev": "Core Retail Sales (MoM) Ago", "actual": "1,4%", "esperado": "0,6%", "previo": "−0,2%"}, {"ev": "Retail Sales (MoM) Ago", "actual": "1,2%", "esperado": "0,8%", "previo": "−0,5%"}, {"ev": "Atlanta Fed GDPNow Q3", "actual": "5,1%", "esperado": "4,4%", "previo": "4,4%"}, {"ev": "Proyección de tasa 1er año", "actual": "4,1%", "esperado": "—", "previo": "3,6%"}]}, {"fecha": "2026-09-17", "tipo": "macro", "titulo": "Philly Fed y empleo confirman la fortaleza", "texto": "La manufactura de Filadelfia bate el consenso y las solicitudes de subsidio caen a 196 mil. El SPY sube 1,13%, el mejor día del índice en la ventana, justo cuando el portafolio pierde 6,6% por el decaimiento final de las opciones.", "datos": [{"ev": "Philadelphia Fed Sep", "actual": "37,8", "esperado": "31,3", "previo": "47,4"}, {"ev": "Initial Jobless Claims", "actual": "196K", "esperado": "207K", "previo": "206K"}, {"ev": "Continuing Jobless Claims", "actual": "1.730K", "esperado": "1.780K", "previo": "1.769K"}]}], "operaciones": {"2026-08-26": ["Compra 24 NVDA @ 210.51", "Corto 61 TLT @ 83.15"], "2026-08-28": ["Venta 24 NVDA @ 225.33"], "2026-09-02": ["Compra 49 CNR @ 100.43", "Compra 15 CRWD @ 214.22", "Compra 200 BCI @ 25.99", "Compra 67 UUP @ 28.16", "Compra 120 IBIT @ 43.38", "Compra 20 XLV @ 174.01", "Compra 20 RSP @ 217.82", "Compra 75 XLE @ 64.49", "Compra 97 XLF @ 57.47", "Compra 8 GLD @ 400.46", "Compra 92 SHY @ 81.63", "Compra 74 STIP @ 100.73"], "2026-09-03": ["Compra 24 CVX @ 212.57"], "2026-09-04": ["Compra 63 CTVA @ 87.25"], "2026-09-08": ["Venta 74 STIP @ 100.84", "Compra 100 SGOV @ 100.48", "Venta 92 SHY @ 81.70", "Compra 94 XLF @ 57.68", "Corto 15 QQQ @ 718.99"], "2026-09-09": ["Compra 200 EWZ @ 38.02"], "2026-09-10": ["Compra opción 10 ORCL2618I160 @ 10.10", "Compra opción 10 QQQ2618U710 @ 7.78"], "2026-09-16": ["Venta 63 CTVA @ 82.32", "Compra 162 DTCR @ 27.35", "Compra 103 VWOB @ 64.72", "Compra 22 SOXX @ 506.71"]}, "macro": {"bloques": [{"id": "demanda", "titulo": "Demanda e ingreso", "veredicto": "Por encima del consenso", "tono": "alza", "texto": "Cada publicación de actividad real batió al consenso, y en algunos casos por márgenes que no son de redondeo. La Fed de Atlanta revisó su estimación de crecimiento del tercer trimestre de 4,0% a 5,1% durante la ventana.", "ind": [["Nóminas no agrícolas (ago)", "162K", "55K", "alza"], ["Ventas minoristas núcleo (ago)", "1,4%", "0,6%", "alza"], ["Ventas minoristas (ago)", "1,2%", "0,8%", "alza"], ["Órdenes de bienes durables (jul)", "1,1%", "0,4%", "alza"], ["Crédito al consumo (jul)", "18,06B", "11,90B", "alza"], ["Solicitudes de subsidio (17-sep)", "196K", "207K", "alza"], ["Atlanta Fed GDPNow (Q3, cierre)", "5,1%", "4,0% al inicio", "alza"]]}, {"id": "precios", "titulo": "Precios", "veredicto": "Pegajosos, con expectativas desanclándose", "tono": "alza", "texto": "La inflación general se quedó clavada en 3,4% anual, el núcleo mensual salió por encima y los componentes de precios pagados de ambos ISM están sobre 70. Lo más incómodo no es el dato observado sino la expectativa: la encuesta de Michigan a un año saltó de 4,0% a 4,6% en tres semanas.", "ind": [["IPC (YoY, ago)", "3,4%", "3,4%", "neutro"], ["IPC núcleo (MoM, ago)", "0,3%", "0,2%", "alza"], ["Deflactor del PIB (Q2)", "6,4%", "6,3%", "alza"], ["PCE núcleo (YoY, jul)", "3,3%", "3,3%", "neutro"], ["ISM manufacturero, precios (ago)", "71,1", "70,5", "alza"], ["ISM servicios, precios (ago)", "72,6", "70,0", "alza"], ["Michigan, inflación 1 año (sep)", "4,6%", "4,2%", "alza"], ["Subasta bono 30 años (10-sep)", "5,308%", "5,216% anterior", "alza"]]}, {"id": "fragilidad", "titulo": "Confianza y manufactura regional", "veredicto": "Deteriorándose", "tono": "baja", "texto": "El contrapeso. Las encuestas regionales de manufactura y el consumidor se deterioraron con fuerza mientras los datos de demanda batían al consenso. No es una contradicción sino una expansión que se estrecha: sostenida por el gasto agregado, sin respaldo de la industria ni del ánimo del hogar.", "ind": [["Chicago PMI (ago)", "47,1", "57,9", "baja"], ["NY Empire State (sep)", "7,60", "14,80", "baja"], ["Michigan, sentimiento (sep)", "47,8", "51,0", "baja"], ["Michigan, expectativas (sep)", "45,8", "50,5", "baja"], ["ADP empleo privado (ago)", "38K", "47K", "baja"], ["ISM manufacturero, empleo (ago)", "51,2", "52,5", "baja"], ["ISM servicios, empleo (ago)", "47,8", "48,3", "baja"], ["Construcción, gasto (jul)", "−0,5%", "0,0%", "baja"]]}], "contrapunto": [["ISM no manufacturero (ago)", "55,4", "54,1"], ["Philadelphia Fed (sep)", "37,8", "31,3"], ["ISM manufacturero (ago)", "54,6", "55,2"], ["S&P Global Composite PMI (ago)", "56,0", "56,0"]], "implica": [{"t": "Lo que el escenario justifica", "tono": "ok", "items": ["Duración corta y corto de TLT: los bloques de demanda y precios apuntaban a una Fed que sube, y subió a 4,00% el 16 de septiembre con toda la senda proyectada desplazada hacia arriba. La rotación de SHY y STIP hacia SGOV el 8 de septiembre es coherente con esa lectura.", "Coberturas reales (BCI, GLD, UUP): responden al bloque de precios, en particular al salto de las expectativas de Michigan a 4,6%.", "XLF: la tesis era correcta en la variable macro, aunque el sector cayó 2,9%. El alza ya estaba descontada en el precio."]}, {"t": "Lo que el escenario no cubría", "tono": "alerta", "items": ["El deterioro del consumidor no tenía ninguna posición asociada. Con el sentimiento de Michigan en 47,8 y las expectativas en 45,8, faltaba o un defensivo de consumo básico o una reducción de la exposición cíclica.", "La exposición a manufactura y recursos naturales vía CNR iba en contra del tercer bloque desde el 28 de agosto y no se revisó hasta el cierre de la ventana."]}, {"t": "Lo que el escenario contradice", "tono": "riesgo", "items": ["La compra de opciones del 10 de septiembre. Un escenario con señales divergentes entre demanda y confianza es un argumento para reducir apalancamiento direccional, no para concentrar 17.880 USD en dos contratos con vencimiento a ocho días. Esta decisión no se deduce del escenario.", "DTCR, comprado el 16 de septiembre: los REIT son sensibles a la tasa larga, justo la variable contra la que apuesta el corto de TLT."]}], "gdpnow": [["2026-08-26", 4.6], ["2026-09-01", 4.8], ["2026-09-03", 4.7], ["2026-09-10", 4.4], ["2026-09-16", 5.1], ["2026-09-17", 5.1]], "fed": [["2026-08-26", 3.75], ["2026-09-15", 3.75], ["2026-09-16", 4.0], ["2026-09-17", 4.0]]}, "porClase": {"clases": ["Equity", "Renta Fija", "Commodities", "Divisas", "Cripto", "Derivados"], "acum": {"Equity": [-20.4, 419.28, 355.68, 355.68, 355.68, 361.53, 335.01, 243.6, -52.75, -118.85, -86.47, -226.21, -30.65, 305.66, -478.68, -39.99], "Renta Fija": [-9.15, 1.22, 16.47, 38.43, 78.08, 71.9, 78.42, 68.78, 72.53, 102.2, 161.15, 157.66, 155.0, 168.42, 155.93, 143.23], "Commodities": [0.0, 0.0, 0.0, 0.0, 0.0, 38.56, 90.08, 38.48, 32.08, 101.12, 131.2, 84.48, 29.04, 105.52, 44.24, 81.2], "Divisas": [0.0, 0.0, 0.0, 0.0, 0.0, 0.67, -10.05, -5.36, -11.39, -12.06, -8.71, -6.03, 0.67, 4.02, 16.08, 14.74], "Cripto": [0.0, 0.0, 0.0, 0.0, 0.0, 49.2, 356.4, 222.0, 121.2, 109.2, 36.0, 46.8, 163.2, -32.4, -40.8, -9.6], "Derivados": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1060.0, -11700.0, -11370.0, -10010.0, -10700.0, -17080.0]}, "tabla": [{"clase": "Derivados", "pesoProm": 3.1, "pesoFin": 1.0, "activo": 3.1, "pnl": -17080.0, "contrib": -17.09, "ret": -225.93}, {"clase": "Equity", "pesoProm": 28.7, "pesoFin": 59.5, "activo": -71.3, "pnl": -39.99, "contrib": -0.04, "ret": -0.06}, {"clase": "Cripto", "pesoProm": 3.9, "pesoFin": 6.3, "activo": 3.9, "pnl": -9.6, "contrib": -0.01, "ret": -0.18}, {"clase": "Caja", "pesoProm": 52.7, "pesoFin": 6.5, "activo": 52.7, "pnl": 0.0, "contrib": 0.0, "ret": 0.0}, {"clase": "Divisas", "pesoProm": 1.4, "pesoFin": 2.3, "activo": 1.4, "pnl": 14.74, "contrib": 0.01, "ret": 0.78}, {"clase": "Commodities", "pesoProm": 6.2, "pesoFin": 10.3, "activo": 6.2, "pnl": 81.2, "contrib": 0.08, "ret": 0.96}, {"clase": "Renta Fija", "pesoProm": 4.0, "pesoFin": 14.2, "activo": 4.0, "pnl": 143.23, "contrib": 0.14, "ret": 0.66}], "residuo": -326.41}};
+
+/* ---------- utilidades ---------- */
+const fmtUSD = n => (n<0?"−":"") + "$" + Math.abs(n).toLocaleString("es-CO",{maximumFractionDigits:0});
+const fmtPct = (n,d=2) => (n>0?"+":n<0?"−":"") + Math.abs(n).toFixed(d) + "%";
+const fmtNum = (n,d=2) => n.toFixed(d);
+const mesCorto = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const etiqFecha = s => { const [y,m,d]=s.split("-"); return (+d)+" "+mesCorto[+m-1]; };
+const ns = "http://www.w3.org/2000/svg";
+const el = (t,a={}) => { const e=document.createElementNS(ns,t); for(const k in a) e.setAttribute(k,a[k]); return e; };
+
+const rets = a => a.slice(1).map((v,i)=> v/a[i]-1);
+const media = a => a.reduce((s,x)=>s+x,0)/a.length;
+const desv = a => { const m=media(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1)); };
+const cov = (a,b) => { const ma=media(a), mb=media(b);
+  return a.reduce((s,x,i)=>s+(x-ma)*(b[i]-mb),0)/(a.length-1); };
+const maxDD = a => { let pico=a[0], peor=0;
+  for(const v of a){ pico=Math.max(pico,v); peor=Math.min(peor,v/pico-1); } return peor; };
+
+/* ---------- serie rebasada ---------- */
+const base100 = a => a.map(v => v/a[0]*100);
+const sReal = base100(D.pf), sCf = base100(D.cf), sSpy = base100(D.spy);
+
+/* ---------- gráfico de líneas ---------- */
+function lineas(cont, series, fechas){
+  const W=1000, H=448, mL=54, mR=16, mT=18, mB=62;
+  const todos = series.flatMap(s=>s.datos);
+  let lo=Math.min(...todos), hi=Math.max(...todos);
+  const pad=(hi-lo)*0.12 || 1; lo-=pad; hi+=pad;
+  const x = i => mL + i*(W-mL-mR)/(fechas.length-1);
+  const y = v => mT + (hi-v)/(hi-lo)*(H-mT-mB);
+  const svg = el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img",
+    "aria-label":"Evolución comparada del portafolio, el contrafactual sin opciones y el SPY"});
+
+  const paso = (hi-lo)>40 ? 10 : 5;
+  for(let v=Math.ceil(lo/paso)*paso; v<=hi; v+=paso){
+    svg.appendChild(el("line",{x1:mL,x2:W-mR,y1:y(v),y2:y(v),class:"gl"}));
+    const t=el("text",{x:mL-10,y:y(v)+4,class:"ax","text-anchor":"end"}); t.textContent=v; svg.appendChild(t);
+  }
+  fechas.forEach((f,i)=>{ if(i%3!==0 && i!==fechas.length-1) return;
+    const t=el("text",{x:x(i),y:H-14,class:"ax","text-anchor":"middle"});
+    t.textContent=etiqFecha(f); svg.appendChild(t); });
+
+  const iOpc = fechas.indexOf("2026-09-10");
+  if(iOpc>-1){
+    svg.appendChild(el("line",{x1:x(iOpc),x2:x(iOpc),y1:mT,y2:H-mB,class:"calloutline"}));
+    const t=el("text",{x:x(iOpc)+8,y:mT+14,class:"callout"});
+    t.textContent="10 sep · compra de opciones por 17.880 USD"; svg.appendChild(t);
+  }
+
+  series.forEach(s=>{
+    const d = s.datos.map((v,i)=> (i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+    svg.appendChild(el("path",{d,class:"serie",stroke:s.color,
+      "stroke-dasharray": s.guion || "none"}));
+    const c=el("circle",{cx:x(s.datos.length-1),cy:y(s.datos.at(-1)),r:4,fill:s.color});
+    svg.appendChild(c);
+    if(s.marcarOps) Object.keys(D.operaciones).forEach(f=>{
+      const i=fechas.indexOf(f); if(i<0) return;
+      svg.appendChild(el("circle",{cx:x(i),cy:y(s.datos[i]),r:3.8,class:"opdot"}));
+    });
+  });
+  cont.appendChild(svg);
+}
+
+/* ---------- área apilada ---------- */
+function area(cont, clases, orden, fechas){
+  const W=1000,H=330,mL=64,mR=16,mT=14,mB=34;
+  const colores={Caja:"var(--cash)","Renta Fija":"var(--rf)",Equity:"var(--eq)",
+    Commodities:"var(--cm)",Divisas:"var(--fx)",Cripto:"var(--cr)",Derivados:"var(--dv)"};
+  const tot = fechas.map((_,i)=> orden.reduce((s,c)=>s+Math.abs(clases[c][i]),0));
+  const hi = Math.max(...tot)*1.02;
+  const x = i => mL + i*(W-mL-mR)/(fechas.length-1);
+  const y = v => mT + (1-v/hi)*(H-mT-mB);
+  const svg = el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img",
+    "aria-label":"Exposición diaria por clase de activo"});
+  for(let v=0; v<=hi; v+=25000){
+    svg.appendChild(el("line",{x1:mL,x2:W-mR,y1:y(v),y2:y(v),class:"gl"}));
+    const t=el("text",{x:mL-10,y:y(v)+4,class:"ax","text-anchor":"end"});
+    t.textContent=(v/1000)+"k"; svg.appendChild(t);
+  }
+  const acum = fechas.map(()=>0);
+  orden.forEach(c=>{
+    const abajo = acum.slice();
+    const arriba = fechas.map((_,i)=> acum[i]+Math.abs(clases[c][i]));
+    const d = arriba.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ")
+      + " " + abajo.map((v,i)=>"L"+x(abajo.length-1-i).toFixed(1)+" "+y(abajo[abajo.length-1-i]).toFixed(1)).join(" ") + " Z";
+    svg.appendChild(el("path",{d,fill:colores[c],opacity:.88}));
+    arriba.forEach((v,i)=>acum[i]=v);
+  });
+  fechas.forEach((f,i)=>{ if(i%3!==0 && i!==fechas.length-1) return;
+    const t=el("text",{x:x(i),y:H-10,class:"ax","text-anchor":"middle"});
+    t.textContent=etiqFecha(f); svg.appendChild(t); });
+  cont.appendChild(svg);
+
+  const chips=document.getElementById("chipsClases");
+  orden.slice().reverse().forEach(c=>{
+    const s=document.createElement("span"); s.className="chip";
+    s.innerHTML=`<i style="background:${colores[c]}"></i>${c} · <span class="num">${fmtUSD(Math.abs(clases[c].at(-1)))}</span>`;
+    chips.appendChild(s);
+  });
+}
+
+/* ---------- métricas ---------- */
+function metricas(){
+  const rp=rets(D.pf), rc=rets(D.cf), rb=rets(D.spy);
+  const rf=0.04/252;
+  const calc = (r,serie) => {
+    const b = cov(r,rb)/ (desv(rb)**2);
+    return {
+      ret: (serie.at(-1)/serie[0]-1)*100,
+      vol: desv(r)*Math.sqrt(252)*100,
+      beta: b,
+      corr: cov(r,rb)/(desv(r)*desv(rb)),
+      alfa: (media(r)-b*media(rb))*r.length*100,
+      te: desv(r.map((v,i)=>v-rb[i]))*Math.sqrt(252)*100,
+      sharpe: (media(r)-rf)/desv(r)*Math.sqrt(252),
+      dd: maxDD(serie)*100
+    };
+  };
+  const A=calc(rp,D.pf), B=calc(rc,D.cf), C=calc(rb,D.spy);
+  const filas=[
+    ["Rendimiento acumulado", o=>fmtPct(o.ret)],
+    ["Volatilidad anualizada", o=>fmtNum(o.vol,1)+"%"],
+    ["Beta vs SPY", o=>fmtNum(o.beta)],
+    ["Correlación con SPY", o=>fmtNum(o.corr)],
+    ["Alfa de Jensen del periodo", o=>fmtPct(o.alfa)],
+    ["Tracking error anualizado", o=>o.te<0.001?"—":fmtNum(o.te,1)+"%"],
+    ["Sharpe anualizado (rf 4%)", o=>fmtNum(o.sharpe)],
+    ["Drawdown máximo", o=>fmtPct(o.dd)]
+  ];
+  const tb=document.getElementById("tbMetricas");
+  filas.forEach(([nom,f])=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${nom}</td><td class="col-real">${f(A)}</td>
+      <td class="col-cf">${f(B)}</td><td class="col-bm">${f(C)}</td>`;
+    tb.appendChild(tr);
+  });
+  document.getElementById("lgReal").textContent=fmtPct(A.ret);
+  document.getElementById("lgCf").textContent=fmtPct(B.ret);
+  document.getElementById("lgSpy").textContent=fmtPct(C.ret);
+}
+
+/* ---------- tabla de posiciones ---------- */
+function tabla(){
+  const tb=document.getElementById("tbPos");
+  const maxExp=Math.max(...D.posiciones.map(p=>p.exposicion));
+  D.posiciones.forEach((p,i)=>{
+    const tr=document.createElement("tr");
+    tr.tabIndex=0; tr.setAttribute("aria-selected","false");
+    const sg=p.pnl>=0?"pos":"neg";
+    const ancho=Math.max(2,p.exposicion/maxExp*70);
+    tr.innerHTML=`
+      <td><span class="tk">${p.ticker}</span><br><span class="nm">${p.nombre}</span></td>
+      <td class="ocultar"><span class="pill">${p.clase}</span></td>
+      <td class="ocultar num">${etiqFecha(p.entrada)}</td>
+      <td class="num"><span class="barra" style="width:${ancho}px;background:var(--line)"></span>
+        &nbsp;${fmtUSD(p.exposicion)}</td>
+      <td class="num"><span class="limite ${p.peso>20?"pasa":p.peso>15?"cerca":""}"
+        title="Límite del 20% por inversión"><i style="width:${Math.min(100,p.peso/20*100)}%"></i></span>
+        ${p.peso.toFixed(1)}%</td>
+      <td class="ocultar num">${fmtUSD(Math.abs(p.costo))}</td>
+      <td class="num ${sg}">${fmtUSD(p.pnl)}</td>
+      <td class="num ${sg}">${fmtPct(p.ret)}</td>`;
+    const abrir=()=>{
+      [...tb.children].forEach(r=>r.setAttribute("aria-selected","false"));
+      tr.setAttribute("aria-selected","true"); tesis(p);
+    };
+    tr.addEventListener("click",abrir);
+    tr.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();abrir();} });
+    tb.appendChild(tr);
+  });
+}
+
+function tesis(p){
+  const c=document.getElementById("panelTesis");
+  const campos=[["Tesis de inversión",p.tesis],["Riesgo asumido",p.riesgo],
+    ["Resultado",p.resultado],["Lección aprendida",p.leccion]];
+  c.innerHTML=`<h3>${p.ticker} · ${p.nombre}</h3>
+    <p class="meta">${p.clase} · entrada ${etiqFecha(p.entrada)} · ${p.ops} operación${p.ops>1?"es":""} ·
+      ${p.estado} · P&L ${fmtUSD(p.pnl)} (${fmtPct(p.ret)})</p>
+    <div class="campos">${campos.map(([et,v])=>
+      `<div class="campo"><span class="et">${et}</span><p>${v||"Por completar."}</p></div>`).join("")}</div>`;
+  c.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+lineas(document.getElementById("chartLinea"),[
+  {datos:sSpy,color:"var(--bench)",guion:"5 4"},
+  {datos:sCf,color:"var(--cf)"},
+  {datos:sReal,color:"var(--real)",marcarOps:true}
+], D.fechas);
+area(document.getElementById("chartArea"), D.clases, D.ordenClases, D.fechas);
+/* ---------- desempeño por clase ---------- */
+const COLCLASE={Equity:"var(--eq)","Renta Fija":"var(--rf)",Commodities:"var(--cm)",
+  Divisas:"var(--fx)",Cripto:"var(--cr)",Derivados:"var(--dv)",Caja:"var(--cash)"};
+
+function multi(cont, claves, H){
+  const W=520,mL=56,mR=86,mT=14,mB=30;
+  const vals=claves.flatMap(c=>D.porClase.acum[c]).concat([0]);
+  let lo=Math.min(...vals), hi=Math.max(...vals);
+  const pad=(hi-lo)*0.12||100; lo-=pad; hi+=pad;
+  const x=i=>mL+i*(W-mL-mR)/(D.fechas.length-1);
+  const y=v=>mT+(hi-v)/(hi-lo)*(H-mT-mB);
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img",
+    "aria-label":"Aporte acumulado al resultado por clase de activo"});
+  const paso=(hi-lo)>8000?5000:(hi-lo)>800?250:50;
+  for(let v=Math.ceil(lo/paso)*paso; v<=hi; v+=paso){
+    svg.appendChild(el("line",{x1:mL,x2:W-mR,y1:y(v),y2:y(v),
+      class:"gl","stroke-width":v===0?1.6:1}));
+    const t=el("text",{x:mL-8,y:y(v)+4,class:"ax","text-anchor":"end"});
+    t.textContent=Math.abs(v)>=1000?(v/1000)+"k":v; svg.appendChild(t);
+  }
+  D.fechas.forEach((f,i)=>{ if(i%5!==0 && i!==D.fechas.length-1) return;
+    const t=el("text",{x:x(i),y:H-9,class:"ax","text-anchor":"middle"});
+    t.textContent=etiqFecha(f); svg.appendChild(t); });
+  claves.forEach(c=>{
+    const s=D.porClase.acum[c];
+    const d=s.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+    svg.appendChild(el("path",{d,class:"serie",stroke:COLCLASE[c],"stroke-width":1.8}));
+    const t=el("text",{x:W-mR+8,y:y(s.at(-1))+4,class:"ax",fill:COLCLASE[c]});
+    t.textContent=c; svg.appendChild(t);
+  });
+  cont.appendChild(svg);
+}
+
+function tablaClases(){
+  const tb=document.getElementById("tbClases");
+  D.porClase.tabla.forEach(r=>{
+    const sg=r.pnl>0?"pos":r.pnl<0?"neg":"";
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td><span class="dot" style="background:${COLCLASE[r.clase]}"></span>${r.clase}</td>
+      <td>${r.pesoProm.toFixed(1)}%</td><td>${r.pesoFin.toFixed(1)}%</td>
+      <td>${fmtPct(r.activo,1)}</td>
+      <td>${r.clase==="Caja"?"—":fmtPct(r.ret)}</td>
+      <td class="${sg}">${r.clase==="Caja"?"—":fmtUSD(r.pnl)}</td>
+      <td class="${sg}">${r.clase==="Caja"?"—":fmtPct(r.contrib)}</td>`;
+    tb.appendChild(tr);
+  });
+  const res=D.porClase.residuo;
+  document.getElementById("notaClases").textContent =
+    "La suma de los aportes por clase deja un residuo de "+fmtUSD(res)+
+    " frente a la variación del valor de la cuenta, atribuible a comisiones e intereses sobre saldos, "+
+    "que Investopedia no desglosa en sus exportaciones.";
+}
+
+metricas();
+tabla();
+multi(document.getElementById("chartClaseFull"), D.porClase.clases, 250);
+multi(document.getElementById("chartClaseZoom"),
+  D.porClase.clases.filter(c=>c!=="Derivados"), 250);
+tablaClases();
+</script>
+</body>
+</html>
